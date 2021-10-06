@@ -13,20 +13,21 @@ const Fingering: NextPage = () => {
 	const table = <table className='table'>
 		<thead>
 			<tr>
-				<th>name</th>
-				<th>fingering</th>
-				<th>finger_num</th>
-				<th>barre</th>
-				<th>cost</th>
+				<th>Name</th>
+				<th>Fingering</th>
+				<th>FingerNum</th>
+				<th>Barre</th>
+				<th>Cost</th>
 			</tr>
 		</thead>
 		<tbody>
 			{forms.map((f,i)=><tr key={i}>
 				<td>{f.name}</td>
-				<td><FingeringTable fingering={f.form}/></td>
+				<td><FingeringTable fingering={f}/></td>
 				{/* <td>{f.form}</td> */}
 				<td>{f.finger_num}</td>
 				<td>{f.barre}</td>
+				<td>{f.cost}</td>
 			</tr>)}
 
 		</tbody>

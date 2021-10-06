@@ -7,21 +7,32 @@ interface Props {
     w: number
     noteData: NoteDatum[]
     tuning: number[]
+    channel: number
 }
 
 // 入力MIDIデータを2次元配列の形に変換する
-const convertData = (nd: NoteDatum[]):number[][] => {
-    const reso = 0.25
-    const end = nd[nd.length - 1].time
+const convertData = (nd: NoteDatum[], reso:number, channel: number):number[][] => {
     const res:number[][] = []
+
+    // 指定されたチャンネルのものを取り出す
+    const found = nd.filter(n=>n.channel===channel)
+
+    // もし無かったらそのままリターン
+    if (found.length < 1) return res
+
+    // alert(nd.length-1)
+    const end = found[found.length - 1].time
+    // const end = 3
+
     for (let i=0; i<end; i+=reso) {
-        res.push(nd.filter(n=>n.time === i).map(x=>x.note))
+        res.push(found.filter(n=>n.time === i).map(x=>x.note))
     }
     return res
 }
 
 const Tab = (props: Props) => {
-    const noteData = convertData(props.noteData)
+    console.log(props.noteData)
+    const noteData = convertData(props.noteData, 0.25, props.channel)
 
     const fingers = createFingerForms() // 動的に生成したフォームを取得する
     const tabData: number[][] = []
@@ -29,12 +40,15 @@ const Tab = (props: Props) => {
     const [points, setPoints] = useState<number[][]>([[2,2],[2,2]])
 
     const [generate, setGenerate] = useState(true)
+    const [exectime, setExecTime] = useState('')
+
 
     useEffect(() => {
         generateTab()
-    },[props.w, props.tuning])
+    },[])
 
     const generateTab = () => {
+        const startTime = performance.now()
 
         // 利用可能な音高列を現在のチューニングとフォームから計算する
         const notes: number[][] = []
@@ -171,6 +185,12 @@ const Tab = (props: Props) => {
 
         // ステートにセット
         setTab(<pre>{tabStrLine}</pre>)
+
+        // 実行時間計測
+        const endTime = performance.now()
+        const t = (endTime - startTime).toFixed(2) + ' ms'
+        setExecTime(t)
+        // console.log('generateTab: ' + t)
     }
 
     const geButton = () => {
@@ -178,12 +198,19 @@ const Tab = (props: Props) => {
         generateTab()
     }
 
+    const debugInfo = <p>
+        { exectime + ' (' + noteData.length + ' notes, ' + fingers.length + ' fingers)' }
+    </p>
+
     return <div>
         <div className='text-center'>
             <button onClick={geButton} className="btn btn-lg btn-success mb-3">Generate Tablature</button>
         </div>
 
+        <hr />
+
         <div className={generate ? 'visible' : 'invisible'}>
+            { debugInfo }
             { tab }
             <Graph originalData={noteData} forms={fingers} points={points} />
         </div>
