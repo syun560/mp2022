@@ -9,7 +9,6 @@ interface Props {
     setChannel: any
 }
 
-
 const MidiIn = (props: Props) => {
     const [midiData, setMidi] = useState<Midi>()
     const [midiURL, setURL] = useState<string>('Fur_Elise_(original).mid')
@@ -33,8 +32,8 @@ const MidiIn = (props: Props) => {
 
             const midi = await Midi.fromUrl(midiURL)
             setMidi(midi)
-            // console.log('Tracks:')
-            // console.log(midi.tracks)
+            console.log('Tracks:')
+            console.log(midi.tracks)
             
             midi.tracks.forEach((track, index) => {
                 // if (index === channel) {

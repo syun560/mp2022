@@ -1,4 +1,4 @@
-import React, { useCallback, createRef, useEffect } from 'react'
+import React, { useCallback, createRef, useEffect, memo } from 'react'
 import PianoRollCell from './PianoRollCell'
 import { NoteDatum } from '../type'
 
@@ -8,7 +8,9 @@ interface Props {
     setChannel: any
 }
 
-export default function PianoRoll (props: Props){
+const PianoRoll = memo((props: Props) => {
+    console.log('PianoRoll')
+
     // ピアノロールを最適な箇所に自動でスクロールする
     const ref = createRef<HTMLTableCellElement>()
     const scrollToCenter = useCallback(() => {
@@ -44,7 +46,7 @@ export default function PianoRoll (props: Props){
         notes.push(i)
     }
     const ticks:number[] = []
-    for (let i = 1; i <= 32; i++) {
+    for (let i = 0; i < 32; i++) {
         ticks.push(i)
     }
 
@@ -83,11 +85,13 @@ export default function PianoRoll (props: Props){
     </select>
 
     return <div>
-        Ch: {selector}
+        Track: {selector}
         <div style={box}>
             <table className="table table-bordered table-sm"><tbody>
                 {roll}
             </tbody></table>
         </div>
     </div>
-}
+})
+
+export default PianoRoll

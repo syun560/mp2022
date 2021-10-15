@@ -6,11 +6,13 @@ export interface NoteDatum {
     duration: number // 長さ（2で全音符, 0.5: 4分音符, 0.25: 8分音符）
 }
 
-export interface Finger {
+export interface RawFinger {
     name: string,
     form: number[],
     finger: number[], 
-    finger_num: number,
     barre: number,
+}
+
+export interface Finger extends RawFinger{
     cost: number
 }

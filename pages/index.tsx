@@ -59,9 +59,9 @@ const Home: NextPage = () => {
 			Tuning: {tuning.map(value => noteNumberToNoteName(value)).join(', ')}
 		</div>
 
-		{state === 'loading'? '' : 
+		{state === 'loading'? '' : <>
 			<Tab w={w} noteData={noteData} tuning={tuning} channel={channel} />
-		}
+		</>}
 	</Layout>
 }
 

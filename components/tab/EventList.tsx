@@ -8,7 +8,9 @@ interface Props {
 }
 
 export default function EventList (props: Props){
-    const list = props.noteData.filter(f=>f.channel===props.channel).map((n, i)=><tr key={i}>
+    const noteData = props.noteData.filter(f=>f.channel===props.channel)
+
+    const list = noteData.map((n, i)=><tr key={i}>
         {/* <td>{n.channel}</td> */}
         <td>{n.time}</td>
         <td>{n.note + ' [' + noteNumberToNoteName(n.note) + ']'}</td>
@@ -20,15 +22,22 @@ export default function EventList (props: Props){
         overflow: 'auto',
     }
 
-    return <div style={box}><table className="table table-sm">
-        <thead><tr>
-            {/* <th>ch</th> */}
-            <th>Time</th>
-            <th>Note</th>
-            <th>Dur</th>
-        </tr></thead>
-        <tbody>
-            {list}
-        </tbody>
-    </table></div>
+    const debug_info = <p>
+        Notes: {noteData.length} min: {noteNumberToNoteName([...noteData].sort((a,b)=>a.note < b.note ? -1 : 1)[0]?.note)}
+    </p>
+
+    return <div style={box}>
+        {debug_info}
+        <table className="table table-sm">
+            <thead><tr>
+                {/* <th>ch</th> */}
+                <th>Time</th>
+                <th>Note</th>
+                <th>Dur</th>
+            </tr></thead>
+            <tbody>
+                {list}
+            </tbody>
+        </table>
+    </div>
 }

@@ -9,13 +9,11 @@ const Fingering: NextPage = () => {
 	const calcCost = () => {
 		
 	}
-
 	const table = <table className='table'>
 		<thead>
 			<tr>
 				<th>Name</th>
 				<th>Fingering</th>
-				<th>FingerNum</th>
 				<th>Barre</th>
 				<th>Cost</th>
 			</tr>
@@ -25,7 +23,6 @@ const Fingering: NextPage = () => {
 				<td>{f.name}</td>
 				<td><FingeringTable fingering={f}/></td>
 				{/* <td>{f.form}</td> */}
-				<td>{f.finger_num}</td>
 				<td>{f.barre}</td>
 				<td>{f.cost}</td>
 			</tr>)}
@@ -34,6 +31,7 @@ const Fingering: NextPage = () => {
 	</table>
 
 	return <Layout title='Home' navNum={1}>
+		<p className='m-2'>forms: {forms.length}</p>
 		{table}
 	</Layout>
 }
