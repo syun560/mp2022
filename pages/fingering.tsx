@@ -22,7 +22,7 @@ const Fingering: NextPage = () => {
 	const option = ['-', 'C', 'D', 'E', 'F', 'G', 'A', 'B']
 	const select = <select>{option.map((o,i)=><option key={i}>{o}</option>)}</select>
 
-	// const mCostTable = <table className='table'>
+	// const mCostTable = <table className='table table-bordered table-sm'>
 	// 	<thead>
 	// 		<tr>
 	// 			<th>#</th>
@@ -32,7 +32,7 @@ const Fingering: NextPage = () => {
 	// 	<tbody>
 	// 		{forms.map((f,i)=><tr key={i}>
 	// 			<th>{f.name}</th>
-	// 			{mCost[i].map((mc, j) => <td key={j}>{mc}</td>)}
+	// 			{mCost[i].map((mc, j) => <td key={j} className={mc === 0 ? 'table-secondary' : ''}>{mc}</td>)}
 	// 		</tr>)}
 	// 	</tbody>
 	// </table>

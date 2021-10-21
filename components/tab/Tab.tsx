@@ -126,7 +126,7 @@ const Tab = (props: Props) => {
                     const rep = ring_cnt / d.length　// 再現度（鳴らす音の数/元の音の数）
                     const cp = fingers[formIndex].cost　// 押弦コスト
                     let cc = 0
-                    if(mCosts.length>0) cc = mCosts[prevFormIndex][formIndex] // フォーム変更コスト
+                    if(mCosts.length>0 && prevFormIndex !== -1) cc = mCosts[prevFormIndex][formIndex] // フォーム変更コスト
                     const easiness = 1.0 / (1.0 + cp + cc)　// 難易度（大きいほど簡単）
                     
                     // ポイント（高いほどより適している）
