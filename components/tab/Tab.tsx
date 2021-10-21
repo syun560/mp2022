@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { createFingerForms} from './Lib' 
+import { createFingerForms, fingerMoveCost } from './Lib' 
 import Graph from './Graph'
 import { NoteDatum } from './type'
 import ASCIITab from './ASCIITab'
@@ -41,11 +41,13 @@ const getNoteLength = (noteData: number[][]) => {
 const Tab = (props: Props) => {
     console.log('Tab components')
     // console.log(props.noteData)
-    const noteData = convertData(props.noteData, 0.25, props.channel)
+    const noteData = convertData(props.noteData, 240, props.channel)
     const noteLength = getNoteLength(noteData)
+    
+    const fingers = createFingerForms() // 動的に生成したフォームを取得する
+    const mCosts = fingerMoveCost(fingers) // フォーム移動コストのテーブルを取得する
 
     // グラフ表示用
-    const fingers = createFingerForms() // 動的に生成したフォームを取得する
     const [points, setPoints] = useState<number[][]>([[2,2],[2,2]])
     const [correctForms, setCorrectForms] = useState<number[]>([])
     
@@ -86,6 +88,9 @@ const Tab = (props: Props) => {
         let hit_cnt = 0
         let tmpScore = 0
 
+        // 前のフォームを覚えておく変数
+        let prevFormIndex = 0
+
         const tmpCorrectForms: number[] = []
         
         // 入力音高列をイテレーションする(100itr)
@@ -117,14 +122,12 @@ const Tab = (props: Props) => {
                         })
                     })
 
-                    // 再現度（鳴らす音の数/元の音の数）
-                    const rep = ring_cnt / d.length
                     
-                    // 押弦コスト
-                    const cp = fingers[formIndex].cost
-                    
-                    // 難易度（大きいほど簡単）
-                    const easiness = 1.0 / (1.0 + cp)
+                    const rep = ring_cnt / d.length　// 再現度（鳴らす音の数/元の音の数）
+                    const cp = fingers[formIndex].cost　// 押弦コスト
+                    let cc = 0
+                    if(mCosts.length>0) cc = mCosts[prevFormIndex][formIndex] // フォーム変更コスト
+                    const easiness = 1.0 / (1.0 + cp + cc)　// 難易度（大きいほど簡単）
                     
                     // ポイント（高いほどより適している）
                     const point = props.w*rep + (1.0-props.w)* easiness
@@ -154,6 +157,7 @@ const Tab = (props: Props) => {
             
             // 正しいフォームを記録する
             tmpCorrectForms.push(form_number)
+            prevFormIndex = form_number
 
             // 用意したフォームで再現可能な音高であれば、tabDataに追加
             const fingering: number[] = finger.map((f, index) => {

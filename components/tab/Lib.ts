@@ -8,6 +8,62 @@ export function noteNumberToNoteName(num: number): string {
     return notes_name[offset] + base.toString()
 }
 
+// 水平方向の位置を求める
+export function getHorizontalPosition(finger: Finger): number{
+    let res = 10
+    finger.form.forEach(f=>{
+        if (f < res && f !== 0 && f !== -1) res = f
+    })
+    if (res === 10) res = 0
+    return res
+}
+
+// 各指のマンハッタン移動距離の和を求める
+function manhattan(f: Finger, g: Finger): number{
+    let res = 0
+
+    // 指使いをイテレーション
+    const yubi = [1,2,3,4]
+    yubi.forEach(y=>{
+        // fにもgにもある場合
+        if (f.finger.includes(y) && g.finger.includes(y)) {
+            const fstr = f.finger.indexOf(y)
+            const ffret = f.form[fstr]
+            const gstr = g.finger.indexOf(y)
+            const gfret = g.form[gstr]
+            // マンハッタン距離をコストとする
+            res += Math.abs(fstr - gstr) + Math.abs(ffret - gfret)
+        }
+        // どちらかの場合は離弦、押弦コスト+1
+        else if (f.finger.includes(y) || g.finger.includes(y)) {
+            res += 1
+        }
+    })
+    return res
+}
+
+// フォーム変更難易度（テーブル）を返す
+export function fingerMoveCost(fingers: Finger[]): number[][] {
+    const res:number[][] = []
+    // 100*100くらいのイテレーション
+    fingers.forEach((f,fi)=> {
+        const tmpRes: number[] = []
+        fingers.forEach((g,gi)=>{
+            // f→gへ行く時の難易度
+            // 水平方向の移動距離 + 各指のマンハッタン距離
+            // fの水平方向の位置を求める（親指の位置ではないので微妙？）
+            const horizontal_move = Math.abs(getHorizontalPosition(g) - getHorizontalPosition(f))
+            const finger_move_cost = manhattan(f, g)
+            // const cost = horizontal_move + finger_move_cost
+            const cost = finger_move_cost
+            tmpRes.push(cost)
+        })
+        res.push(tmpRes)
+    })
+    return res
+}
+
+// フォームを返す
 export function createFingerForms(): Finger[] {
 
     // コストを計算する
@@ -81,6 +137,12 @@ export function createFingerForms(): Finger[] {
     }
 
     const chord: RawFinger[] = [
+        {
+            name: 'None',
+            form: [0, 0, 0, 0, 0, 0],
+            finger: [0, 0, 0, 0, 0, 0],
+            barre: 0,
+        },
         {
             name: 'C',
             form: [-1, 3, 2, 0, 1, 0],
@@ -1093,12 +1155,6 @@ export function createFingerForms(): Finger[] {
             name: 'Bdim7',
             form: [-1, 2, 3, 1, 3, -1],
             finger: [0, 2, 3, 1, 4, 0],
-            barre: 0,
-        },
-        {
-            name: 'None',
-            form: [0, 0, 0, 0, 0, 0],
-            finger: [0, 0, 0, 0, 0, 0],
             barre: 0,
         },
     ]

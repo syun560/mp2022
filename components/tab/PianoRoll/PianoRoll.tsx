@@ -50,10 +50,10 @@ const PianoRoll = memo((props: Props) => {
         ticks.push(i)
     }
 
-    // ピアノロール用にデータクレンジング
+    // ピアノロールに表示するデータの設定
     const cleanData = (nd :NoteDatum, note: number, tick: number):boolean => {
-        const reso = 4
-        return nd.note === note && nd.time === tick/reso && nd.channel === props.channel
+        const reso = 240
+        return nd.note === note && nd.time === tick * reso && nd.channel === props.channel
     }
 
     // ピアノロール生成
@@ -85,7 +85,7 @@ const PianoRoll = memo((props: Props) => {
     </select>
 
     return <div>
-        Track: {selector}
+        <span className='me-2'>Track: {selector}</span>
         <div style={box}>
             <table className="table table-bordered table-sm"><tbody>
                 {roll}

@@ -14,7 +14,7 @@ export default function EventList (props: Props){
         {/* <td>{n.channel}</td> */}
         <td>{n.time}</td>
         <td>{n.note + ' [' + noteNumberToNoteName(n.note) + ']'}</td>
-        <td>{n.duration.toFixed(1)}</td>
+        <td>{n.duration.toFixed(2)}</td>
     </tr>)
 
     const box = {

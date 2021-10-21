@@ -29,7 +29,7 @@ export const Graph = memo((props: Props) => {
     const correctForm = <tr>
         <th>#</th>
         {props.correctForms.map((d,i)=>{
-            if(d === -1) return <td></td>
+            if(d === -1) return <td key={i}></td>
             const name = props.fingers[d].name
             return <td key={i}>
                 {name !== 'None' ? name : ''}

@@ -11,28 +11,9 @@ import Tuning from '../components/tab/Tuning'
 import { noteNumberToNoteName } from '../components/tab/Lib'
 import { NoteDatum } from '../components/tab/type'
 
-const originalData: NoteDatum[] = [
-	{ channel:1, note: 64, time: 0, duration: 0.25 },
-	{ channel:1, note: 63, time: 0.25, duration: 0.25 },
-	{ channel:1, note: 64, time: 0.5, duration: 0.25 },
-	{ channel:1, note: 63, time: 0.75, duration: 0.25 },
-	{ channel:1, note: 64, time: 1, duration: 0.25 },
-	{ channel:1, note: 59, time: 1.25, duration: 0.25 },
-	{ channel:1, note: 62, time: 1.5, duration: 0.25 },
-	{ channel:1, note: 60, time: 1.75, duration: 0.25 },
-	{ channel:1, note: 45, time: 2, duration: 1 },
-	{ channel:1, note: 52, time: 2, duration: 1 },
-	{ channel:1, note: 57, time: 2, duration: 1 },
-	{ channel:1, note: 52, time: 3, duration: 0.25 },
-	{ channel:1, note: 57, time: 3.25, duration: 0.25 },
-	{ channel:1, note: 40, time: 3.5, duration: 0.75 },
-	{ channel:1, note: 56, time: 3.5, duration: 0.75 },
-	{ channel:1, note: 59, time: 3.5, duration: 0.75 },
-]
-
 const Home: NextPage = () => {
 	const [w, setW] = useState(0.8)
-	const [noteData, setNoteData] = useState<NoteDatum[]>(originalData)
+	const [noteData, setNoteData] = useState<NoteDatum[]>([])
 	const [tuning, setTuning] = useState<number[]>([40, 45, 50, 55, 59, 64])
 	const [channel, setChannel] = useState<number>(0)
 	const [state, setState] = useState<'loading'|'complete'>('loading')

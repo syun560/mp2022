@@ -30,28 +30,34 @@ const MidiIn = (props: Props) => {
             props.setState('loading')
             console.log('midi load start')
 
+            // URLからMIDI読み込み
             const midi = await Midi.fromUrl(midiURL)
             setMidi(midi)
             console.log('Tracks:')
             console.log(midi.tracks)
-            
+
+            // トラックごとイテレーション
             midi.tracks.forEach((track, index) => {
-                // if (index === channel) {
-                    const notes = track.notes
-                    notes.forEach(note => {
-                        // console.log(`note: ${note.midi}, time: ${note.time}, duration: ${note.duration}, name: ${note.name}`)
-                        tmpNotes.push({
-                            channel: index,
-                            note: note.midi,
-                            time: note.time,
-                            duration: note.duration
-                        })
+
+                const notes = track.notes
+                
+                // ノートごとイテレーション
+                notes.forEach((note, i) => {
+                    // console.log(`note: ${note.midi}, time: ${note.time}, duration: ${note.duration}, name: ${note.name}`)
+                    tmpNotes.push({
+                        channel: index,
+                        note: note.midi,
+                        time: note.ticks,
+                        duration: note.duration
                     })
-                    
-                // }
+                })
             })
 
             // ロード完了
+            console.log(midi.header)
+            console.log('duration:' + midi.duration)
+            console.log('duration:' + midi.duration)
+            console.log('duration:' + midi.duration)
             console.log('midi load end')
             // alert(midi.tracks.length)
             props.setNoteData(tmpNotes)
