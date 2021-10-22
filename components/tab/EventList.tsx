@@ -12,7 +12,7 @@ export default function EventList (props: Props){
 
     const list = noteData.map((n, i)=><tr key={i}>
         {/* <td>{n.channel}</td> */}
-        <td>{n.time}</td>
+        <td>{n.time/480}</td>
         <td>{n.note + ' [' + noteNumberToNoteName(n.note) + ']'}</td>
         <td>{n.duration.toFixed(2)}</td>
     </tr>)
