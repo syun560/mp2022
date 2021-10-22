@@ -12,9 +12,10 @@ export default function FingeringTable(props: Props){
     const form = [...props.fingering.form].reverse()
     const finger = [...props.fingering.finger].reverse()
     const td = {
-        // backgroundImage: 'url(' + fingerboard.src + ')',
-        // backgroundSize: 'contain',
-        // backgroundRepeat: 'no-repeat',
+        backgroundImage: 'url(' + fingerboard.src + ')',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
         padding: '0px',
         textAlign: 'center' as const,
         width: '30px',
@@ -31,7 +32,7 @@ export default function FingeringTable(props: Props){
         </tr>
     )
 
-    return <table className='table table-bordered'>
+    return <table className='table table-borderless'>
         <tbody>
             {record}
         </tbody>

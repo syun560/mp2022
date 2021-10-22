@@ -65,7 +65,7 @@ const Tab = (props: Props) => {
     
     // 2次元Tabデータ
     const [tabData, setTabData] = useState<number[][]>([])
-    const tmpTabData:number[][] = []
+    let tmpTabData:number[][] = []
 
     // 再現度、スコア
     const [score, setScore] = useState(0)
@@ -97,6 +97,8 @@ const Tab = (props: Props) => {
                     })
                 )
             })
+
+            tmpTabData = []
 
             // スコア（グラフ）表示用変数
             const tmpPoints: number[][] = []
