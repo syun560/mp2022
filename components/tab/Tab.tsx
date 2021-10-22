@@ -229,7 +229,6 @@ const Tab = (props: Props) => {
             <Graph tabData={tabData} tuning={tune} noteData={noteData} fingers={fingers} correctForms={correctForms} points={points} />
             <ASCIITab tabData={tabData} tuning={tune} />
         </div>
-
     </div>
 }
 

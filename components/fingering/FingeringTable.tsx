@@ -6,9 +6,8 @@ interface Props {
     fingering: Finger
 }
 
-
 export default function FingeringTable(props: Props){
-    const fret = [1,2,3,4,5,6]
+    const fret = [1,2,3,4,5,6,7,8,9,10,11,12]
     const form = [...props.fingering.form].reverse()
     const finger = [...props.fingering.finger].reverse()
     const td = {
@@ -21,13 +20,27 @@ export default function FingeringTable(props: Props){
         width: '30px',
         height: '1.5em'
     }
+    const first_td = {
+        padding: '0px',
+        borderRight: '4px black double',
+        textAlign: 'center' as const,
+        width: '10px',
+        height: '1.5em'
+    }
+
+    const finger_color = [
+        'bg-secondary',
+        'bg-warning',
+        'bg-success',
+        'bg-info',
+        'bg-secondary',
+    ]
 
     const record = form.map(
         (f,i)=><tr key={i}>
-            {fret.map(fr=> fr === f ?
-                <td style={td} key={fr} className='table-danger'>{finger[i]}</td>
-            :
-                <td style={td} key={fr} className=''></td>
+            <td style={first_td}>{f === 0 ? '○' : f === -1 ? '✕' : ''}</td>
+            {fret.map(fr=> 
+                <td style={td} key={fr}>{fr === f ? <span className={'badge rounded-pill ' + finger_color[finger[i]]}>{finger[i]}</span> : ''}</td>
             )}
         </tr>
     )
