@@ -74,9 +74,7 @@ const MidiIn = (props: Props) => {
     return <div>
         <form>
             <input type="file" name='aaa' onChange={onChangeInputFile} />
-            {midiURL}
         </form>
-        <h3>{midiData ? '': 'loading！'}</h3>
     </div>
 }
 

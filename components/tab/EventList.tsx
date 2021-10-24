@@ -21,6 +21,11 @@ export default function EventList (props: Props){
         height: '275px',
         overflow: 'auto',
     }
+    const th = {
+        position: 'sticky' as const,
+        top: 0,
+        zIndex: 1
+    }
 
     const debug_info = <p>
         Notes: {noteData.length} min: {noteNumberToNoteName([...noteData].sort((a,b)=>a.note < b.note ? -1 : 1)[0]?.note)}
@@ -31,9 +36,9 @@ export default function EventList (props: Props){
         <table className="table table-sm">
             <thead><tr>
                 {/* <th>ch</th> */}
-                <th>Time</th>
-                <th>Note</th>
-                <th>Dur</th>
+                <th style={th} className='bg-warning'>Time</th>
+                <th style={th} className='bg-warning'>Note</th>
+                <th style={th} className='bg-warning'>Dur</th>
             </tr></thead>
             <tbody>
                 {list}

@@ -19,6 +19,11 @@ export default function PianoRollCell(props: Props) {
             background: 'cyan'
         }
     }
+    // ネガティブマージン（はみ出すマージン）のテスト
+    const test = {
+        marginRight: '20px',
+        marginTop: '-10px' 
+    }
 
     // tick4つごとに区切り線を追加
     // if (tick % 4 == 0){
@@ -28,5 +33,5 @@ export default function PianoRollCell(props: Props) {
     //     }
     // }
 
-    return <td style={td}></td>
+    return <td style={td}><div style={test}></div></td>
 }

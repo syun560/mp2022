@@ -25,33 +25,30 @@ const Home: NextPage = () => {
 		<div className="bg-light my-3 p-3">
 			{/* {state} */}
 			<MidiIn noteData={noteData} setNoteData={setNoteData} setState={setState} setChannel={setChannel} />
-			{state === 'loading'? '' : 
+			
+			{state === 'loading'?
+			<h3>Loading...</h3>
+			: 
 			<div className='row'>
 				<div className="col-3">
 					<EventList noteData={noteData} channel={channel} />
+					<Param w={w} setW={setW} />
+					<Tuning capo={capo} setCapo={setCapo} tuning={tuning} setTuning={setTuning} />
+					Tuning: {regularTuning.map(value => noteNumberToNoteName(value + capo)).join(', ')}
 				</div>
 				<div className="col-9">
-					<PianoRoll noteData={noteData} channel={channel} setChannel={setChannel} />
+				<Tab
+					w={w}
+					noteData={noteData}
+					tuning={tuning} setTuning={setTuning}
+					capo={capo} setCapo={setCapo}
+					channel={channel}
+					setChannel={setChannel}
+				/>
 				</div>
 			</div>
 			}
-
-			<Param w={w} setW={setW} />
-
-			<Tuning capo={capo} setCapo={setCapo} tuning={tuning} setTuning={setTuning} />
-
-			Tuning: {regularTuning.map(value => noteNumberToNoteName(value + capo)).join(', ')}
 		</div>
-
-		{state === 'loading'? '' : <>
-			<Tab
-				w={w}
-				noteData={noteData}
-				tuning={tuning} setTuning={setTuning}
-				capo={capo} setCapo={setCapo}
-				channel={channel}
-			/>
-		</>}
 	</Layout>
 }
 

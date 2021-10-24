@@ -12,6 +12,7 @@ interface Props {
     setTuning: any
     capo: number
     setCapo: any
+    setChannel: any
 }
 
 // 入力MIDIデータを2次元配列の形に変換する
@@ -25,7 +26,6 @@ const convertData = (nd: NoteDatum[], reso:number, channel: number):number[][] =
     if (found.length < 1) return res
 
     const end = found[found.length - 1].time
-    // const end = 5
 
     for (let i = 0; i <= end; i += reso) {
         res.push(found.filter(n=>n.time === i).map(x=>x.note))
@@ -43,9 +43,8 @@ const getNoteLength = (noteData: number[][]) => {
 
 const Tab = (props: Props) => {
     console.log('Tab components')
-    // console.log(props.noteData)
-    const noteData = convertData(props.noteData, 240, props.channel)
-    const noteLength = getNoteLength(noteData)
+    const noteDataArray = convertData(props.noteData, 240, props.channel)
+    const noteLength = getNoteLength(noteDataArray)
     
     const fingers = createFingerForms() // 動的に生成したフォームを取得する
     const mCosts = fingerMoveCost(fingers) // フォーム移動コストのテーブルを取得する
@@ -77,7 +76,6 @@ const Tab = (props: Props) => {
     
     // カポ、変則調弦のイテレーションのための変数
     const capo_itr = [0,1,2,3,4,5,6,7,8,9,10,11,12]
-    // const capo_itr = [0]
     const anomal_itr = [-2,-1,1,2]
 
     const generateTab = () => {
@@ -112,7 +110,7 @@ const Tab = (props: Props) => {
             const tmpCorrectForms: number[] = []
             
             // 入力音高列をイテレーションする(100itr)
-            noteData.forEach((d:number[]) => {            
+            noteDataArray.forEach((d:number[]) => {            
                 
                 let point_max: number = 0.0
                 let form_number: number = -1
@@ -219,15 +217,21 @@ const Tab = (props: Props) => {
     </>
 
     return <div>
-        <div className='text-center'>
-            <button onClick={geButton} className="btn btn-lg btn-success mb-3">Generate Tablature</button>
-        </div>
 
-        <hr />
         <div className={generate ? 'visible' : 'invisible'}>
             { debugInfo }
-            <Graph tabData={tabData} tuning={tune} noteData={noteData} fingers={fingers} correctForms={correctForms} points={points} />
-            <ASCIITab tabData={tabData} tuning={tune} />
+            <Graph 
+                tabData={tabData}
+                tuning={tune}
+                noteData={props.noteData} noteDataArray={noteDataArray}
+                fingers={fingers} correctForms={correctForms} points={points}
+                channel={props.channel} setChannel={props.setChannel}
+            />
+            {/* <ASCIITab tabData={tabData} tuning={tune} /> */}
+        </div>
+        
+        <div className='text-center'>
+            <button onClick={geButton} className="btn btn-lg btn-success mb-3">Generate Tablature</button>
         </div>
     </div>
 }

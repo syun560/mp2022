@@ -27,20 +27,32 @@ export default function FingeringTable(props: Props){
         width: '10px',
         height: '1.5em'
     }
+    const fret_number_td = {
+        padding: '0px',
+        textAlign: 'center' as const,
+        height: '1.5em'
+    }
 
     const finger_color = [
         'bg-secondary',
-        'bg-warning',
+        'bg-danger',
         'bg-success',
         'bg-info',
         'bg-secondary',
     ]
 
+    // 開始フレットを決める
+    const start_fret = 0
+    const fret_number = <tr style={fret_number_td}>
+        <td></td>
+        {fret.map(f=><td key={f}>{f}</td>)}
+    </tr>
+
     const record = form.map(
         (f,i)=><tr key={i}>
             <td style={first_td}>{f === 0 ? '○' : f === -1 ? '✕' : ''}</td>
             {fret.map(fr=> 
-                <td style={td} key={fr}>{fr === f ? <span className={'badge rounded-pill ' + finger_color[finger[i]]}>{finger[i]}</span> : ''}</td>
+                <td style={td} className='shadow-sm' key={fr}>{fr === f ? <span className={'badge rounded-pill ' + finger_color[finger[i]]}>{finger[i]}</span> : ''}</td>
             )}
         </tr>
     )
@@ -48,6 +60,7 @@ export default function FingeringTable(props: Props){
     return <table className='table table-borderless'>
         <tbody>
             {record}
+            {fret_number}
         </tbody>
     </table>
 }

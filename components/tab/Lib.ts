@@ -1,4 +1,5 @@
-import { Finger, RawFinger } from "./type"
+import { Note } from "@tonejs/midi/dist/Note"
+import { Finger, RawFinger, NoteDatum } from "./type"
 
 // ノートナンバー（64）をノート（C5）に変換する
 export function noteNumberToNoteName(num: number): string {
@@ -6,6 +7,19 @@ export function noteNumberToNoteName(num: number): string {
     const base = Math.floor(num / 12) - 1
     const offset = num % 12
     return notes_name[offset] + base.toString()
+}
+
+// ノートの最小値と最大値を求める
+export function getMinMaxNote(noteData: NoteDatum[]): [number, number] {
+    // 一番下のノート（下端のノート）
+    const sorted = noteData.sort((a,b) => a.note > b.note ? 1 : -1)
+    let minNote = 0
+    let maxNote = 127
+    if (noteData.length > 0) {
+        minNote = sorted[0].note
+        maxNote = sorted[noteData.length - 1].note
+    }
+    return [minNote, maxNote]
 }
 
 // 水平方向の位置を求める
