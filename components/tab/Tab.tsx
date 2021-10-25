@@ -12,7 +12,6 @@ interface Props {
     setTuning: any
     capo: number
     setCapo: any
-    setChannel: any
 }
 
 // 入力MIDIデータを2次元配列の形に変換する
@@ -225,7 +224,7 @@ const Tab = (props: Props) => {
                 tuning={tune}
                 noteData={props.noteData} noteDataArray={noteDataArray}
                 fingers={fingers} correctForms={correctForms} points={points}
-                channel={props.channel} setChannel={props.setChannel}
+                channel={props.channel}
             />
             {/* <ASCIITab tabData={tabData} tuning={tune} /> */}
         </div>

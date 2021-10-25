@@ -48,7 +48,7 @@ const MidiIn = (props: Props) => {
                         channel: index,
                         note: note.midi,
                         time: note.ticks,
-                        duration: note.duration
+                        duration: note.durationTicks
                     })
                 })
             })

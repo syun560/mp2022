@@ -4,8 +4,8 @@ import React, { useState } from 'react'
 
 import Tab from '../components/tab/Tab'
 import MidiIn from '../components/tab/MidiIn'
-import PianoRoll from '../components/tab/PianoRoll/PianoRoll'
 import EventList from '../components/tab/EventList'
+import TrackSelector from '../components/tab/TrackSelector'
 import Param from '../components/tab/Param'
 import Tuning from '../components/tab/Tuning'
 import { noteNumberToNoteName } from '../components/tab/Lib'
@@ -30,20 +30,20 @@ const Home: NextPage = () => {
 			<h3>Loading...</h3>
 			: 
 			<div className='row'>
-				<div className="col-3">
+				<div className="col-lg-3">
+					<TrackSelector noteData={noteData} channel={channel} setChannel={setChannel} />
 					<EventList noteData={noteData} channel={channel} />
 					<Param w={w} setW={setW} />
 					<Tuning capo={capo} setCapo={setCapo} tuning={tuning} setTuning={setTuning} />
 					Tuning: {regularTuning.map(value => noteNumberToNoteName(value + capo)).join(', ')}
 				</div>
-				<div className="col-9">
+				<div className="col-lg-9">
 				<Tab
 					w={w}
 					noteData={noteData}
 					tuning={tuning} setTuning={setTuning}
 					capo={capo} setCapo={setCapo}
 					channel={channel}
-					setChannel={setChannel}
 				/>
 				</div>
 			</div>

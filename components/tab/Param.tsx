@@ -5,7 +5,7 @@ const Param = (props: any) => {
         props.setW(e.target.value * 1.0)
     }
     const style = {
-        width: "500px"
+        width: "100%"
     }
 
     return <div>

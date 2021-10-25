@@ -5,8 +5,8 @@ import { noteNumberToNoteName, getMinMaxNote } from '../Lib'
 
 interface Props {
     noteData: NoteDatum[]
+    noteDataArray: number[][]
     channel: number
-    setChannel: any
 }
 
 const PianoRoll = memo((props: Props) => {
@@ -49,17 +49,20 @@ const PianoRoll = memo((props: Props) => {
     // 最小値と最大値
     const [minNote, maxNote] = getMinMaxNote(noteData)
 
+    // 分解能（できれば外からpropsで読み込みたい）
+    const reso = 240
+
     // tickの最大値
+    let tick_max = props.noteDataArray.length
 
     // ダミーの数値（Reactのkeyのため必要？）
     const notes:number[] = []
     for (let i = 127; i >= 0; i--) notes.push(i)
     const ticks:number[] = []
-    for (let i = 0; i < 128; i++) ticks.push(i)
+    for (let i = 0; i < tick_max; i++) ticks.push(i)
 
     // ピアノロールに表示するデータの設定
     const cleanData = (nd :NoteDatum, note: number, tick: number):boolean => {
-        const reso = 240
         return nd.note === note && nd.time === tick * reso
     }
 
@@ -82,28 +85,6 @@ const PianoRoll = memo((props: Props) => {
             </tr>
         )
     })
-
-    // チャンネルセレクタ
-    // 最後のノートのチャンネルをトラック数とする
-    const ch_max = noteData[noteData.length - 1].channel
-    const selector = <select value={props.channel} onChange={(e:any)=>{props.setChannel(Number(e.target.value))}}>
-        {(()=> {
-            const ch: JSX.Element[] = []
-            for (let i = 0; i <= ch_max; i++) {
-                ch.push(<option key={i}>{i}</option>)
-            }
-            return ch
-        })()}
-    </select>
-
-    // return <div>
-    //     <span className='me-2'>Track: {selector}</span>
-    //     <div style={box}>
-    //         <table className="table table-bordered table-sm"><tbody>
-    //             {roll}
-    //         </tbody></table>
-    //     </div>
-    // </div>
     return <>{roll}</>
 })
 

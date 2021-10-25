@@ -14,7 +14,7 @@ export default function EventList (props: Props){
         {/* <td>{n.channel}</td> */}
         <td>{n.time/480}</td>
         <td>{n.note + ' [' + noteNumberToNoteName(n.note) + ']'}</td>
-        <td>{n.duration.toFixed(2)}</td>
+        <td>{(n.duration/480).toFixed(2)}</td>
     </tr>)
 
     const box = {
@@ -31,7 +31,7 @@ export default function EventList (props: Props){
         Notes: {noteData.length} min: {noteNumberToNoteName([...noteData].sort((a,b)=>a.note < b.note ? -1 : 1)[0]?.note)}
     </p>
 
-    return <div style={box}>
+    return <div style={box} className='bar'>
         {debug_info}
         <table className="table table-sm">
             <thead><tr>

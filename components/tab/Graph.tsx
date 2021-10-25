@@ -17,7 +17,6 @@ interface Props {
     // ピアノロール表示のため
     noteData: NoteDatum[]
     channel: number
-    setChannel: any
 }
 
 export const Graph = memo((props: Props) => {
@@ -38,7 +37,7 @@ export const Graph = memo((props: Props) => {
 
     // 運指を表示する
     const correctForm = <tr>
-        <th style={fixedRow}>#</th>
+        <th style={fixedRow}>Fingering</th>
         {props.correctForms.map((d,i)=>{
             if(d === -1) return <td key={i}></td>
             const name = props.fingers[d].name
@@ -71,10 +70,10 @@ export const Graph = memo((props: Props) => {
         {props.points.map((d,i)=><td key={i} className={d[j] > 1.0 ? 'table-danger': ''}>{d[j]?.toFixed(1)}</td>)}            
     </tr>)
 
-    return <div style={div}>
+    return <div style={div} className='bar'>
         <table style={table} className='table table-bordered'>
         <tbody>
-		    <PianoRoll noteData={props.noteData} channel={props.channel} setChannel={props.setChannel} />
+		    <PianoRoll noteData={props.noteData} noteDataArray={props.noteDataArray} channel={props.channel} />
             {correctForm}
             {tab}
             {recall}
