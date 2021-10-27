@@ -90,7 +90,7 @@ export function createFingerForms(): Finger[] {
             }
 
             // 指を開く距離
-            const f2 = f.finger.filter(g=>g!==0) // 押さえている指だけ抽出する（0は省く）
+            const f2 = f.form.filter(g=>g>0) // 押さえている指だけ抽出する（0は省く）
             let finger_width = Math.max(...f2) - Math.min(...f2)
             if (!Number.isFinite(finger_width)) finger_width = 0
 
@@ -279,7 +279,7 @@ export function createFingerForms(): Finger[] {
         },
         {
             name: 'C#m',
-            form: [-1, 4, 6, 6, 3, 4],
+            form: [-1, 4, 6, 6, 5, 4],
             finger: [0, 1, 3, 4, 2, 1],
             barre: 1,
         },
