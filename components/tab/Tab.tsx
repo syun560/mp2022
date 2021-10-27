@@ -14,6 +14,13 @@ interface Props {
     setCapo: any
 }
 
+interface DebugNotes {
+    correctForm: number
+    score: number
+    recall: number
+    cost: number
+}
+
 // 入力MIDIデータを2次元配列の形に変換する
 const convertData = (nd: NoteDatum[], reso:number, channel: number):number[][] => {
     const res:number[][] = []
@@ -53,6 +60,7 @@ const Tab = (props: Props) => {
     const tune = regularTuning.map(value=> props.capo + value)
 
     // グラフ表示用
+    const [debugNotes, setDebugNotes] = useState<number[][]>([])
     const [points, setPoints] = useState<number[][]>([[2,2],[2,2]])
     const [correctForms, setCorrectForms] = useState<number[]>([])
     
@@ -191,8 +199,11 @@ const Tab = (props: Props) => {
                 maxScore = tmpScore
                 props.setCapo(capo)
                 setTabData(tmpTabData)
+
+                // デバッグ表示用変数
                 setPoints(tmpPoints)
                 setCorrectForms(tmpCorrectForms)
+
                 setScore(tmpScore)
                 setHitCount(hit_cnt)
                 setRecall(hit_cnt/noteLength)
@@ -223,7 +234,8 @@ const Tab = (props: Props) => {
                 tabData={tabData}
                 tuning={tune}
                 noteData={props.noteData} noteDataArray={noteDataArray}
-                fingers={fingers} correctForms={correctForms} points={points}
+                fingers={fingers}
+                correctForms={correctForms} points={points}
                 channel={props.channel}
             />
             {/* <ASCIITab tabData={tabData} tuning={tune} /> */}

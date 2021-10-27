@@ -65,6 +65,17 @@ export const Graph = memo((props: Props) => {
         })}
     </tr>
 
+    // 音ごとの難易度
+    const cost = <tr>
+        <th style={fixedRow}>cost</th>
+        {props.noteDataArray.map((n, i)=>{
+            const r = props.tabData[i]?.filter(t=>t>-1).length / n.length
+            return <td key={i} className={r < 1.0 ? 'table-danger' : ''}>
+                {!Number.isNaN(r) ? r.toFixed(2) : ''}
+            </td>
+        })}
+    </tr>
+
     const allTable = props.fingers.map((c, j)=><tr key={j}>
         <th>{c.name}</th>
         {props.points.map((d,i)=><td key={i} className={d[j] > 1.0 ? 'table-danger': ''}>{d[j]?.toFixed(1)}</td>)}            
@@ -77,6 +88,7 @@ export const Graph = memo((props: Props) => {
             {correctForm}
             {tab}
             {recall}
+            {cost}
         </tbody>
     </table>
     </div>
