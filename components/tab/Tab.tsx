@@ -5,15 +5,16 @@ import { NoteDatum, DebugNote } from './type'
 
 interface Props {
     channel: number
-    noteData: NoteDatum[]
-    
+    noteData: NoteDatum[]    
     w: number
+
     capo: number
     setCapo: any
     capoFixedFlag: boolean
     
     tuning: number[]
     setTuning: any
+    tuneFixedFlag: boolean
 }
 
 // 入力MIDIデータを2次元配列の形に変換する
@@ -56,7 +57,7 @@ const Tab = (props: Props) => {
 
     // カポ、変則チューニングによる音階を決定する
     const regularTuning = [40, 45, 50, 55, 59, 64]
-    const tune = regularTuning.map(value=> props.capo + value)
+    const tune = regularTuning.map((value, i)=> props.capo + value + props.tuning[i])
 
     // デバッグ
     const [debugNotes, setDebugNotes] = useState<DebugNote[]>([])
@@ -70,7 +71,22 @@ const Tab = (props: Props) => {
     
     // カポ、変則調弦のイテレーションのための変数
     const capo_itr = [0,1,2,3,4,5,6,7,8,9,10,11,12]
-    const anomal_itr = [-2,-1,1,2]
+    const tune_itr = [
+        [0,0,0,0,0,0],
+        [-1,0,0,0,0,0],
+        [0,-1,0,0,0,0],
+        [0,0,-1,0,0,0],
+        [0,0,0,-1,0,0],
+        [0,0,0,0,-1,0],
+        [0,0,0,0,0,-1],
+        [-2,0,0,0,0,0],
+        [0,-2,0,0,0,0],
+        [0,0,-2,0,0,0],
+        [0,0,0,-2,0,0],
+        [0,0,0,0,-2,0],
+        [0,0,0,0,0,-2],
+        [0,0,2,0,0,0]
+    ]
 
     const generateTab = () => {
         const startTime = performance.now()
@@ -78,8 +94,11 @@ const Tab = (props: Props) => {
         // 各調弦によるスコアを比較するための変数
         let maxScore = 0
 
+        // 変則調弦、カポによるイテレーション（12(変則調弦)*12(カポ)=144くらい？）
+        tune_itr.forEach(anno_tune=>{
         capo_itr.forEach(capo=>{
             if (props.capoFixedFlag && capo !== props.capo) return
+            if (props.tuneFixedFlag && JSON.stringify(anno_tune) !== JSON.stringify(props.tuning)) return
 
             // 利用可能な音高列を現在のチューニングとフォームから計算する（わかりずらいのでここで計算しなくても良い？）
             const formNotes: number[][] = []
@@ -87,7 +106,7 @@ const Tab = (props: Props) => {
                 formNotes.push(
                     finger.form.map((n, index) => {
                         if (n === -1) return -1 // -1のときは使えない
-                        return n + regularTuning[index] + capo
+                        return n + regularTuning[index] + capo + anno_tune[index]
                     })
                 )
             })
@@ -139,7 +158,8 @@ const Tab = (props: Props) => {
                             })
                         })
                         
-                        const recall = ring_cnt / nd.length　// 再現度（鳴らす音の数/元の音の数）
+                        let recall = ring_cnt / nd.length　// 再現度（鳴らす音の数/元の音の数）
+                        if (recall > 1.0) recall = 1.0 // 暫定的な処置（できれば重複して数えないようにしたい。）
                         const cp = fingers[formIndex].cost　// 押弦コスト
                         let cc = 0
                         if(mCosts.length>0 && prevFormIndex !== -1) cc = mCosts[prevFormIndex][formIndex] // フォーム変更コスト
@@ -194,6 +214,7 @@ const Tab = (props: Props) => {
                 console.log('score' + tmpScore)
                 maxScore = tmpScore
                 props.setCapo(capo)
+                props.setTuning(anno_tune)
                 setTabData(tmpTabData)
 
                 // デバッグ表示用変数
@@ -201,6 +222,7 @@ const Tab = (props: Props) => {
 
                 setHitCount(hit_cnt)
             }
+        })
         })
 
         // 実行時間計測

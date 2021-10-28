@@ -44,7 +44,7 @@ const Home: NextPage = () => {
 					w={w}
 					noteData={noteData}
 					capo={capo} setCapo={setCapo} capoFixedFlag={capoFixedFlag}
-					tuning={tuning} setTuning={setTuning}
+					tuning={tuning} setTuning={setTuning} tuneFixedFlag={tuneFixedFlag}
 					channel={channel}
 				/>
 				</div>

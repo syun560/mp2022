@@ -31,7 +31,7 @@ const PianoRoll = memo((props: Props) => {
 
     const th = {
         padding: '0px',
-        borderRight: '2px black solid',
+        borderRight: '1px black solid',
         position: 'sticky' as const,
         left: 0
     }

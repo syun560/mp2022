@@ -33,7 +33,7 @@ const Tuning = (props: Props) => {
 
     const tuning_option = <>
         {props.tuning.map((x:number, i:number)=>
-            <input style={input} type="number" key={i} min={-12} max={12} value={x} onChange={(e)=>changeTuning(e,i)} />
+            <input style={input} type="number" key={i} min={-2} max={2} value={x} onChange={(e)=>changeTuning(e,i)} />
         )}
     </>
 
