@@ -31,7 +31,7 @@ const PianoRoll = memo((props: Props) => {
 
     const th = {
         padding: '0px',
-        borderRight: '4px black solid',
+        borderRight: '2px black solid',
         position: 'sticky' as const,
         left: 0
     }
@@ -75,7 +75,7 @@ const PianoRoll = memo((props: Props) => {
                 {/* 音階 */}
                 <th style={th} ref={note === baseNote ? ref : null}>
                     <div style={note_name_style}>
-                        {note % 12 === 0 ? noteNumberToNoteName(note) : ''}
+                        {note % 12 === 0 || note === minNote || note === maxNote ? noteNumberToNoteName(note) : ''}
                     </div>
                 </th>
 

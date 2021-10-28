@@ -35,7 +35,7 @@ const Home: NextPage = () => {
 					<EventList noteData={noteData} channel={channel} />
 					<Param w={w} setW={setW} />
 					<Tuning capo={capo} setCapo={setCapo} tuning={tuning} setTuning={setTuning} />
-					Tuning: {regularTuning.map(value => noteNumberToNoteName(value + capo)).join(', ')}
+					{/* Tuning: {regularTuning.map(value => noteNumberToNoteName(value + capo)).join(', ')} */}
 				</div>
 				<div className="col-lg-9">
 				<Tab

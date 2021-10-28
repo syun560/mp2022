@@ -16,3 +16,12 @@ export interface RawFinger {
 export interface Finger extends RawFinger{
     cost: number
 }
+
+export interface DebugNote {
+    correctForm: number
+    score: number
+    recall: number
+    cost: number
+    cp: number
+    cc: number
+}

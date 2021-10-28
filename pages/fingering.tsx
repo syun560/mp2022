@@ -30,10 +30,11 @@ const Fingering: NextPage = () => {
 	// 		</tr>
 	// 	</thead>
 	// 	<tbody>
-	// 		{forms.map((f,i)=><tr key={i}>
+	// 		{forms.map((f,i)=>{
+	// 		return <tr key={i}>
 	// 			<th>{f.name}</th>
 	// 			{mCost[i].map((mc, j) => <td key={j} className={mc === 0 ? 'table-secondary' : ''}>{mc}</td>)}
-	// 		</tr>)}
+	// 		</tr>})}
 	// 	</tbody>
 	// </table>
 

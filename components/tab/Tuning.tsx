@@ -34,8 +34,14 @@ const Tuning = (props: Props) => {
 
     return <div>
         <p>
-            <span className='me-2'>Capo: <input style={input} type="number" value={props.capo} min={-2} max={12} onChange={(e)=>{changeCapo(e)}} /></span>
-            <span className='me-2'>Tuning: {tuning_option}</span>
+            <input type="checkbox" />
+            <label>Capo:</label> 
+            <input style={input} type="number" value={props.capo} min={-2} max={12} onChange={(e)=>{changeCapo(e)}} />
+        </p>
+        <p>
+            <input type="checkbox" />
+            <label>Tuning:</label>
+            {tuning_option}
         </p>
     </div>
 }

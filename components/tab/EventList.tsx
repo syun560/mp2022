@@ -27,18 +27,18 @@ export default function EventList (props: Props){
         zIndex: 1
     }
 
-    const debug_info = <p>
-        Notes: {noteData.length} min: {noteNumberToNoteName([...noteData].sort((a,b)=>a.note < b.note ? -1 : 1)[0]?.note)}
-    </p>
+    // const debug_info = <p>
+    //     Notes: {noteData.length} min: {noteNumberToNoteName([...noteData].sort((a,b)=>a.note < b.note ? -1 : 1)[0]?.note)}
+    // </p>
 
     return <div style={box} className='bar'>
-        {debug_info}
+        {/* {debug_info} */}
         <table className="table table-sm">
             <thead><tr>
                 {/* <th>ch</th> */}
-                <th style={th} className='bg-warning'>Time</th>
-                <th style={th} className='bg-warning'>Note</th>
-                <th style={th} className='bg-warning'>Dur</th>
+                <th style={th} className='table-secondary'>Time</th>
+                <th style={th} className='table-secondary'>Note</th>
+                <th style={th} className='table-secondary'>Dur</th>
             </tr></thead>
             <tbody>
                 {list}

@@ -22,9 +22,10 @@ export function getMinMaxNote(noteData: NoteDatum[]): [number, number] {
     return [minNote, maxNote]
 }
 
-// 水平方向の位置を求める
+// 左手の水平方向の位置を求める
 export function getHorizontalPosition(finger: Finger): number{
     let res = 10
+    // 0と-1以外の一番小さいポジションを位置とする。（それ以外は0）
     finger.form.forEach(f=>{
         if (f < res && f !== 0 && f !== -1) res = f
     })
@@ -33,16 +34,16 @@ export function getHorizontalPosition(finger: Finger): number{
 }
 
 // 各指のマンハッタン移動距離の和を求める
-function manhattan(f: Finger, g: Finger): number{
+function manhattan(f: Finger, g: Finger, horizontal_move: number): number{
     let res = 0
 
     // 指使いをイテレーション
     const yubi = [1,2,3,4]
     yubi.forEach(y=>{
-        // fにもgにもある場合
+        // fでもgでも押さえてる指の場合
         if (f.finger.includes(y) && g.finger.includes(y)) {
             const fstr = f.finger.indexOf(y)
-            const ffret = f.form[fstr]
+            const ffret = f.form[fstr] + horizontal_move
             const gstr = g.finger.indexOf(y)
             const gfret = g.form[gstr]
             // マンハッタン距離をコストとする
@@ -66,10 +67,11 @@ export function fingerMoveCost(fingers: Finger[]): number[][] {
             // f→gへ行く時の難易度
             // 水平方向の移動距離 + 各指のマンハッタン距離
             // fの水平方向の位置を求める（親指の位置ではないので微妙？）
-            const horizontal_move = Math.abs(getHorizontalPosition(g) - getHorizontalPosition(f))
-            const finger_move_cost = manhattan(f, g)
-            // const cost = horizontal_move + finger_move_cost
-            const cost = finger_move_cost
+            const diff = getHorizontalPosition(g) - getHorizontalPosition(f)
+            const horizontal_move = Math.abs(diff)
+            // 水平方向の位置を修正
+            const manhattan_move = manhattan(f, g, diff)
+            const cost = horizontal_move + manhattan_move
             tmpRes.push(cost)
         })
         res.push(tmpRes)
