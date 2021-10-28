@@ -68,7 +68,8 @@ export function fingerMoveCost(fingers: Finger[]): number[][] {
             // 水平方向の移動距離 + 各指のマンハッタン距離
             // fの水平方向の位置を求める（親指の位置ではないので微妙？）
             const diff = getHorizontalPosition(g) - getHorizontalPosition(f)
-            const horizontal_move = Math.abs(diff)
+            let horizontal_move = Math.abs(diff)
+            if (fi === 0 || gi === 0) horizontal_move = 0 // 何も押さえないときは移動しない
             // 水平方向の位置を修正
             const manhattan_move = manhattan(f, g, diff)
             const cost = horizontal_move + manhattan_move

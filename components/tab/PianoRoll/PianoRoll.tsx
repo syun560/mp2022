@@ -35,6 +35,10 @@ const PianoRoll = memo((props: Props) => {
         position: 'sticky' as const,
         left: 0
     }
+    const th_base = {
+        ...th,
+        borderBottom: '1px black solid'
+    }
     const note_name_style = {
         fontSize: '0.5em',
         marginBottom: '-4px',
@@ -66,6 +70,8 @@ const PianoRoll = memo((props: Props) => {
         return nd.note === note && nd.time === tick * reso
     }
 
+    const c_major = [0,2,4,5,7,9,11]
+
     // ピアノロール生成
     const roll = notes.map((fuga, indexRow) => {
         const note = 127 - indexRow
@@ -73,14 +79,14 @@ const PianoRoll = memo((props: Props) => {
         else return (
             <tr key={fuga}>
                 {/* 音階 */}
-                <th style={th} ref={note === baseNote ? ref : null}>
+                <th style={note % 12 ? th : th_base} ref={note === baseNote ? ref : null} className={c_major.includes(note % 12) ? '': 'table-secondary'}>
                     <div style={note_name_style}>
                         {note % 12 === 0 || note === minNote || note === maxNote ? noteNumberToNoteName(note) : ''}
                     </div>
                 </th>
 
                 {ticks.map((tick, indexCol) => (
-                    <PianoRollCell key={tick} selected={noteData.some((nd)=>cleanData(nd, note, tick))} />
+                    <PianoRollCell key={tick} note={note} selected={noteData.some((nd)=>cleanData(nd, note, tick))} />
                 ))}
             </tr>
         )

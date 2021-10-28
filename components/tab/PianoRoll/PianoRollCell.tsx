@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 
 interface Props {
     selected: boolean
+    note: number
 }
 
 export default function PianoRollCell(props: Props) {
@@ -11,19 +12,20 @@ export default function PianoRollCell(props: Props) {
         height: '8px',
         padding: '0px',
         background: '',
+        borderBottom: '0px black solid',
         overflow: 'visible'
     }
-    if (props.selected) {
-        td = {
-            ...td,
-            background: 'cyan'
-        }
-    }
+    if (props.selected) td = { ...td, background: 'cyan' }
+    if (props.note % 12 === 0) td = {...td, borderBottom: '1px black solid'}
+
     // ネガティブマージン（はみ出すマージン）のテスト
     const test = {
         marginRight: '20px',
         marginTop: '-10px' 
     }
+
+    // Cメジャー・スケール
+    const c_major = [0,2,4,5,7,9,11]
 
     // tick4つごとに区切り線を追加
     // if (tick % 4 == 0){
@@ -33,5 +35,7 @@ export default function PianoRollCell(props: Props) {
     //     }
     // }
 
-    return <td style={td}><div style={test}></div></td>
+    return <td style={td} className={c_major.includes(props.note % 12) ? '': 'table-secondary'}>
+        <div style={test}></div>
+    </td>
 }

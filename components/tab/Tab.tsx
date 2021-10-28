@@ -2,16 +2,18 @@ import React, { useState, useEffect } from 'react'
 import { createFingerForms, fingerMoveCost } from './Lib' 
 import Graph from './Graph'
 import { NoteDatum, DebugNote } from './type'
-import ASCIITab from './ASCIITab'
 
 interface Props {
-    w: number
-    noteData: NoteDatum[]
-    tuning: number[]
     channel: number
-    setTuning: any
+    noteData: NoteDatum[]
+    
+    w: number
     capo: number
     setCapo: any
+    capoFixedFlag: boolean
+    
+    tuning: number[]
+    setTuning: any
 }
 
 // 入力MIDIデータを2次元配列の形に変換する
@@ -62,10 +64,6 @@ const Tab = (props: Props) => {
     const [exectime, setExecTime] = useState('') // 実行時間
     const [hitCount, setHitCount] = useState(0) // ヒットカウント
 
-    // 再現度、スコア
-    const [score, setScore] = useState(0)
-    const [recall, setRecall] = useState(0)
-
     useEffect(() => {
         generateTab()
     },[])
@@ -81,6 +79,8 @@ const Tab = (props: Props) => {
         let maxScore = 0
 
         capo_itr.forEach(capo=>{
+            if (props.capoFixedFlag && capo !== props.capo) return
+
             // 利用可能な音高列を現在のチューニングとフォームから計算する（わかりずらいのでここで計算しなくても良い？）
             const formNotes: number[][] = []
             fingers.forEach(finger => {
@@ -112,11 +112,11 @@ const Tab = (props: Props) => {
                 let finger: number[] = [0, 0, 0, 0, 0, 0]// コードから押さえない音を抜かした押さえ方を作る（便宜的に）
                 let tmpDebugNote: DebugNote = {
                     correctForm: 0,
-                    score: 0,
+                    score: 1.0,
                     recall: 1.0,
                     cp: 0,
                     cc: 0,
-                    cost: 0,
+                    cost: 1.0,
                 }
 
                 // 配列が0のときはスキップする
@@ -199,9 +199,7 @@ const Tab = (props: Props) => {
                 // デバッグ表示用変数
                 setDebugNotes(tmpDebugNotes)
 
-                setScore(tmpScore)
                 setHitCount(hit_cnt)
-                setRecall(hit_cnt/noteLength)
             }
         })
 
@@ -216,21 +214,21 @@ const Tab = (props: Props) => {
         generateTab()
     }
 
-    let recall2 = 0
-    let score2 = 0
+    let recall = 0
+    let score = 0
     debugNotes.forEach(d=>{
-        recall2 += d.recall
-        score2 += d.score
+        recall += d.recall
+        score += d.score
     })
-    recall2 /= debugNotes.length
+    recall /= debugNotes.length
     
 
     const debugInfo = <>
-        <p>Recall: {recall.toFixed(2)}  ({hitCount}/{noteLength}), Score: {score.toFixed(2)}</p>
+        {/* <p>Recall: {recall.toFixed(2)}  ({hitCount}/{noteLength}), Score: {score.toFixed(2)}</p> */}
         <p>{ exectime + ' (' + noteLength + ' notes, ' + fingers.length + ' fingers)' }</p>
 
-        <p>Recall2: {recall2.toFixed(2)}</p>
-        <p>Score2: {score2.toFixed(2)}</p>
+        <p>Recall: {recall.toFixed(2)}</p>
+        <p>Score: {score.toFixed(2)}</p>
     </>
 
     return <div>
