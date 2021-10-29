@@ -18,6 +18,10 @@ export default function Header(props:Props) {
             url: '/fingering',
             name: 'Fingering'
         },
+        {
+            url: '/songs',
+            name: 'Songs'
+        },
     ]
     const navItem = navPages.map((navPage, i)=> <li key={i} className="nav-item">
         <Link href={navPage.url}><a className={'nav-link' + (props.navNum === i ? ' active':'')}>{navPage.name}</a></Link>

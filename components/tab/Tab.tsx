@@ -15,6 +15,11 @@ interface Props {
     tuning: number[]
     setTuning: any
     tuneFixedFlag: boolean
+
+    generateFlag: boolean
+    setGenerateFlag: any
+
+    setDebugText: any
 }
 
 // 入力MIDIデータを2次元配列の形に変換する
@@ -61,13 +66,12 @@ const Tab = (props: Props) => {
 
     // デバッグ
     const [debugNotes, setDebugNotes] = useState<DebugNote[]>([])
-    const [generate, setGenerate] = useState(true) // タブ譜生成したかどうか
     const [exectime, setExecTime] = useState('') // 実行時間
     const [hitCount, setHitCount] = useState(0) // ヒットカウント
 
     useEffect(() => {
         generateTab()
-    },[])
+    },[props.generateFlag])
     
     // カポ、変則調弦のイテレーションのための変数
     const capo_itr = [0,1,2,3,4,5,6,7,8,9,10,11,12]
@@ -224,37 +228,37 @@ const Tab = (props: Props) => {
             }
         })
         })
-
+        
         // 実行時間計測
         const endTime = performance.now()
         const t = (endTime - startTime).toFixed(2) + ' ms'
         setExecTime(t)
+        
+        // デバッグ情報
+        let recall = 0
+        let score = 0
+        // ここ違うかも
+        debugNotes.forEach(d=>{
+            recall += d.recall
+            score += d.score
+        })
+        recall /= debugNotes.length
+        score /= debugNotes.length    
+        
+        const debugInfo = <p>
+            Recall: {recall.toFixed(2)}<br/>
+            Score: {score.toFixed(2)}<br/>
+            Time: { exectime + ' (' + noteLength + ' notes, ' + fingers.length + ' fingers)' }
+        </p>
+        props.setDebugText(debugInfo)
+        
+        // 終了
+        props.setGenerateFlag(false)
     }
 
-    const geButton = () => {
-        setGenerate(true)
-        generateTab()
-    }
-
-    let recall = 0
-    let score = 0
-    debugNotes.forEach(d=>{
-        recall += d.recall
-        score += d.score
-    })
-    recall /= debugNotes.length
-    
-
-    const debugInfo = <>
-        {/* <p>Recall: {recall.toFixed(2)}  ({hitCount}/{noteLength}), Score: {score.toFixed(2)}</p> */}
-        <p>{ exectime + ' (' + noteLength + ' notes, ' + fingers.length + ' fingers)' }</p>
-
-        <p>Recall: {recall.toFixed(2)}</p>
-        <p>Score: {score.toFixed(2)}</p>
-    </>
 
     return <div>
-        <div className={generate ? 'visible' : 'invisible'}>
+        <div>
             <Graph 
                 tabData={tabData}
                 tuning={tune}
@@ -264,12 +268,6 @@ const Tab = (props: Props) => {
                 channel={props.channel}
                 />
             {/* <ASCIITab tabData={tabData} tuning={tune} /> */}
-        </div>
-        
-        <div>
-            <hr />
-            <button onClick={geButton} className="btn btn-lg btn-success mb-3">Regenerate</button>
-            { debugInfo }
         </div>
     </div>
 }

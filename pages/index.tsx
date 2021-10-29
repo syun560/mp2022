@@ -22,14 +22,19 @@ const Home: NextPage = () => {
 	const [channel, setChannel] = useState<number>(0)
 	const [state, setState] = useState<'loading'|'complete'>('loading')
 
+	const [generateFlag, setGenerateFlag] = useState(false)
+
+	// 仮に
+	const [debugText, setDebugText] = useState(<p></p>)
+
 	return <Layout title='Home' navNum={0}>
-		<div className="bg-light my-3 p-3">
+		<div className="bg-light my-2">
 			<MidiIn noteData={noteData} setNoteData={setNoteData} setState={setState} setChannel={setChannel} />
 			
 			{state === 'loading'?
 			<h3>Loading...</h3>
 			: 
-			<div className='row'>
+			<div className='row mt-2'>
 				<div className="col-lg-3">
 					<TrackSelector noteData={noteData} channel={channel} setChannel={setChannel} />
 					<EventList noteData={noteData} channel={channel} />
@@ -38,6 +43,12 @@ const Home: NextPage = () => {
 						capo={capo} setCapo={setCapo} capoFixedFlag={capoFixedFlag} setCapoFixedFlag={setCapoFixedFlag}
 						tuning={tuning} setTuning={setTuning} tuneFixedFlag={tuneFixedFlag} setTuneFixedFlag={setTuneFixedFlag}
 					/>
+					<div className='text-center'>
+					{generateFlag
+	            		?<button className="btn btn-lg btn-success mb-3" disabled>Generating...</button>
+	            		:<button onClick={()=>setGenerateFlag(true)} className="btn btn-lg btn-success mb-3">Generate</button>
+					}</div>
+					{debugText}
 				</div>
 				<div className="col-lg-9">
 				<Tab
@@ -46,6 +57,8 @@ const Home: NextPage = () => {
 					capo={capo} setCapo={setCapo} capoFixedFlag={capoFixedFlag}
 					tuning={tuning} setTuning={setTuning} tuneFixedFlag={tuneFixedFlag}
 					channel={channel}
+					generateFlag={generateFlag} setGenerateFlag={setGenerateFlag}
+					setDebugText={setDebugText}
 				/>
 				</div>
 			</div>

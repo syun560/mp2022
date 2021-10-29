@@ -71,11 +71,7 @@ const MidiIn = (props: Props) => {
         load()
     }, [midiURL])
 
-    return <div>
-        <form>
-            <input type="file" name='aaa' onChange={onChangeInputFile} />
-        </form>
-    </div>
+    return <input className='form-control' type="file" name='aaa' onChange={onChangeInputFile} />
 }
 
 export default MidiIn

@@ -12,15 +12,18 @@ export default function TrackSelector (props: Props){
     // 最後のノートのチャンネルをトラック数とする
     const ch_max = props.noteData[props.noteData.length - 1].channel
 
-    const selector = <select value={props.channel} onChange={(e:any)=>{props.setChannel(Number(e.target.value))}}>
+    const selector = <select className='form-select' value={props.channel} onChange={(e:any)=>{props.setChannel(Number(e.target.value))}}>
         {(()=> {
             const ch: JSX.Element[] = []
             for (let i = 0; i <= ch_max; i++) {
-                ch.push(<option key={i}>{i}</option>)
+                const found = props.noteData.filter(n=>n.channel===i)
+                ch.push(<option key={i} value={i}>Track: {i} ({found.length} notes)</option>)
             }
             return ch
         })()}
     </select>
 
-    return <span className='me-2'>Track: {selector}</span>
+    return <div className='mb-2'>
+        <span>{selector}</span>
+    </div>
 }
