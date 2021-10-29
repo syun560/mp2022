@@ -1,6 +1,11 @@
 import React from 'react'
 
-const Param = (props: any) => {
+interface Props {
+    w: number
+    setW: any
+}
+
+const Param = (props: Props) => {
     const oc = (e: any) => {
         props.setW(e.target.value * 1.0)
     }
