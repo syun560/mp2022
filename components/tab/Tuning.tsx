@@ -40,12 +40,12 @@ const Tuning = (props: Props) => {
     return <div>
         <p>
             <input className='form-check-input' type="checkbox" checked={props.capoFixedFlag} onChange={(e)=>props.setCapoFixedFlag(e.target.checked)} />
-            <label className='me-2'>Capo:</label> 
+            <label className='mx-2'>Capo:</label> 
             <input style={input} type="number" value={props.capo} min={-2} max={12} onChange={(e)=>{changeCapo(e)}} />
         </p>
         <p>
             <input className='form-check-input' type="checkbox" checked={props.tuneFixedFlag} onChange={(e)=>props.setTuneFixedFlag(e.target.checked)}/>
-            <label className='me-2'>Tuning:</label>
+            <label className='mx-2'>Tuning:</label>
             {tuning_option}
         </p>
     </div>
