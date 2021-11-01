@@ -48,9 +48,11 @@ const Home: NextPage = () => {
 	            		?<button className="btn btn-lg btn-success mb-3" disabled>Generating...</button>
 	            		:<button onClick={()=>setGenerateFlag(true)} className="btn btn-lg btn-success mb-3">Generate</button>
 					}</div>
+					<hr />
 					{debugText}
 				</div>
 				<div className="col-lg-9">
+				<button className="btn btn-primary mb-3">Play</button>
 				<Tab
 					w={w}
 					noteData={noteData}

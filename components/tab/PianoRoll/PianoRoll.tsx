@@ -86,7 +86,7 @@ const PianoRoll = memo((props: Props) => {
                 </th>
 
                 {ticks.map((tick, indexCol) => (
-                    <PianoRollCell key={tick} note={note} selected={noteData.some((nd)=>cleanData(nd, note, tick))} />
+                    <PianoRollCell key={tick} note={note} tick={tick} selected={noteData.some((nd)=>cleanData(nd, note, tick))} />
                 ))}
             </tr>
         )

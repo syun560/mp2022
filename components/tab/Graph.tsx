@@ -1,8 +1,9 @@
 import React, { memo } from 'react'
 import { Finger } from './type'
-import { noteNumberToNoteName } from './Lib' 
 import PianoRoll from './PianoRoll/PianoRoll'
 import { NoteDatum, DebugNote } from './type'
+import Tablature from './Tablature'
+import Conductor from './Conductor'
 
 interface Props {
     tabData: number[][]
@@ -47,12 +48,6 @@ export const Graph = memo((props: Props) => {
         )}            
     </tr>
 
-    // タブ譜を同時に表示する
-    const tab = <>{[5,4,3,2,1,0].map(s=><tr className='table-warning' key={s}>
-        <th style={fixedRow} className='table-secondary'>{noteNumberToNoteName(props.tuning[s])}</th>
-        {props.tabData.map(t=><td>{t[s]!==-1 ? t[s]: ''}</td>)}
-    </tr>)}</>
-
     // 音ごとの難易度
     const easiness = <tr>
         <th style={fixedRow} className='table-secondary'>easiness</th>
@@ -82,18 +77,20 @@ export const Graph = memo((props: Props) => {
     // </tr>)
 
     return <div style={div} className='bar'>
-        <table style={table} className='table table-bordered'>
+        <table style={table} className='table table-borderless'>
         <tbody>
+            <Conductor tickLength={props.noteDataArray.length} isPlaying={false} />
+
 		    <PianoRoll noteData={props.noteData} noteDataArray={props.noteDataArray} channel={props.channel} />
-            {correctForm}
+            {/* {correctForm} */}
 
-            {tab}
+            <Tablature tabData={props.tabData} tuning={props.tuning} />
 
-            {score}
+            {/* {score}
             {recall}
             {easiness}
             {cp}
-            {cc}
+            {cc} */}
         </tbody>
     </table>
     </div>

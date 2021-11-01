@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 interface Props {
     selected: boolean
     note: number
+    tick: number
 }
 
 export default function PianoRollCell(props: Props) {
@@ -13,6 +14,7 @@ export default function PianoRollCell(props: Props) {
         padding: '0px',
         background: '',
         borderBottom: '0px black solid',
+        borderLeft: '',
         overflow: 'visible'
     }
     if (props.selected) td = { ...td, background: 'cyan' }
@@ -28,12 +30,8 @@ export default function PianoRollCell(props: Props) {
     const c_major = [0,2,4,5,7,9,11]
 
     // tick4つごとに区切り線を追加
-    // if (tick % 4 == 0){
-    //     td = {
-    //         ...td,
-    //         borderLeft: '2px solid #e7e7e7'
-    //     }
-    // }
+    if (props.tick % 2 === 0) td = { ...td, borderLeft: '1px solid #e7e7e7' }
+    if (props.tick % 8 === 0) td = { ...td, borderLeft: '1px solid #111' }
 
     return <td style={td} className={c_major.includes(props.note % 12) ? '': 'table-secondary'}>
         <div style={test}></div>
