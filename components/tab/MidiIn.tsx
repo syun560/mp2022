@@ -1,5 +1,5 @@
 import { Midi } from '@tonejs/midi'
-import React, { useEffect, useState, useCallback } from 'react'
+import React, { useEffect, useState } from 'react'
 import { NoteDatum } from './type'
 
 interface Props {
@@ -7,13 +7,13 @@ interface Props {
     setNoteData: any
     setState: any
     setChannel: any
+    setTitle: any
 }
 
 const MidiIn = (props: Props) => {
-    const [midiData, setMidi] = useState<Midi>()
     const [midiURL, setURL] = useState<string>('Fur_Elise_(original).mid')
+    const [midi, setMidi] = useState<Midi>()
 
-    // const channel = 2 // 読み込むチャンネル
     const tmpNotes:NoteDatum[] = []
 
     const onChangeInputFile = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -22,6 +22,7 @@ const MidiIn = (props: Props) => {
             setURL(URL.createObjectURL(file))
 
             props.setChannel(0)
+            props.setTitle(file.name)
         }
     }
 
@@ -30,20 +31,16 @@ const MidiIn = (props: Props) => {
             props.setState('loading')
             console.log('midi load start')
 
-            // URLからMIDI読み込み
             const midi = await Midi.fromUrl(midiURL)
             setMidi(midi)
             console.log('Tracks:')
             console.log(midi.tracks)
 
-            // トラックごとイテレーション
+            // トラックのイテレーション
             midi.tracks.forEach((track, index) => {
-
                 const notes = track.notes
-                
-                // ノートごとイテレーション
+                // ノートのイテレーション
                 notes.forEach((note, i) => {
-                    // console.log(`note: ${note.midi}, time: ${note.time}, duration: ${note.duration}, name: ${note.name}`)
                     tmpNotes.push({
                         channel: index,
                         note: note.midi,
@@ -71,7 +68,7 @@ const MidiIn = (props: Props) => {
         load()
     }, [midiURL])
 
-    return <input className='form-control' type="file" name='aaa' onChange={onChangeInputFile} />
+    return <input className='form-control' type="file" onChange={onChangeInputFile} />
 }
 
 export default MidiIn

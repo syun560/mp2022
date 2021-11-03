@@ -1,25 +1,11 @@
 import type { NextPage } from 'next'
 import Layout from '../components/Layout'
-
-interface Result {
-	title: string
-	genre: string
-	capo: number
-	time: number
-	date: string
-}
-
-const result: Result[] = [
-	{
-		title: '主よ人の望みよ、喜びよ',
-		genre: 'classic',
-		capo: 12,
-		time: 22,
-		date: '2021/10/29'
-	}
-]
+import { Song, SaveData, defaultSaveData } from '../components/tab/type'
+import usePersist from '../components/Persist'
 
 const Songs: NextPage = () => {
+	const [saveData] = usePersist('tab', defaultSaveData)
+
 	return <Layout title='Songs' navNum={2}>
 		<table className="table">
 			<thead>
@@ -29,17 +15,23 @@ const Songs: NextPage = () => {
 					<th>Date</th>
 					<th>Capo</th>
 					<th>Tuning</th>
-					<th>Time(ms)</th>
-					<th>Notes</th>
+					<th>generateTime(ms)</th>
+					<th>NotesNum</th>
 					<th>Recall</th>
 					<th>Score</th>
 				</tr>
 			</thead>
 			<tbody>
-				{result.map((r, i)=><tr key={i}>
-					<td>{r.title}</td>
-					<td>{r.genre}</td>
-					<td>{r.date}</td>
+				{saveData.songs.map((s, i)=><tr key={i}>
+					<td>{s.title}</td>
+					<td>{s.genre}</td>
+					<td>{s.date}</td>
+					<td>{s.capo}</td>
+					<td>{s.tuning.join()}</td>
+					<td>{s.generateTime}</td>
+					<td>{s.noteData.length}</td>
+					<td>{s.recall}</td>
+					<td>{s.score}</td>
 				</tr>)}
 			</tbody>
 		</table>

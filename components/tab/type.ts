@@ -25,3 +25,43 @@ export interface DebugNote {
     cp: number
     cc: number
 }
+
+export interface Song {
+	date: string
+
+    title: string
+	genre: string
+
+    noteData: number[][]
+    tabData: number[][]
+
+	capo: number
+    tuning: number[]
+    
+	generateTime: number
+    score: number
+    recall: number
+}
+
+export interface SaveData {
+    songs: Song[]
+}
+    
+export const defaultSaveData:SaveData = {
+    songs: [
+		{
+			date: '2021/10/29',
+			title: '主よ人の望みよ、喜びよ',
+			genre: 'classic',
+			capo: 12,
+			tuning: [0,0,0,0,0,0],
+			generateTime: 22,
+
+			noteData: [],
+			tabData: [],
+
+            score: 0.8,
+            recall: 0.8
+		}
+	]
+}
