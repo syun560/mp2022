@@ -44,10 +44,12 @@ const Home: NextPage = () => {
 						tuning={tuning} setTuning={setTuning} tuneFixedFlag={tuneFixedFlag} setTuneFixedFlag={setTuneFixedFlag}
 					/>
 					<div className='text-center'>
-					{generateFlag
-	            		?<button className="btn btn-lg btn-success mb-3" disabled>Generating...</button>
-	            		:<button onClick={()=>setGenerateFlag(true)} className="btn btn-lg btn-success mb-3">Generate</button>
-					}</div>
+						{generateFlag
+	            		?<button className="btn btn-success" disabled>Generating...</button>
+	            		:<button onClick={()=>setGenerateFlag(true)} className="btn btn-success">Generate</button>
+						}
+						<button className="btn btn-secondary ms-2">Save</button>
+					</div>
 					<hr />
 					{debugText}
 				</div>

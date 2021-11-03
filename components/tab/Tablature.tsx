@@ -12,7 +12,10 @@ export default function Tablature(props: Props) {
     
     const fixedRow = {
         position: 'sticky' as const,
-        left: 0
+        left: 0,
+        fontSize: '0.5em',
+        marginBottom: '-4px',
+        marginTop: '-4px',
     }
     
     // 1拍ごとの線
@@ -29,6 +32,9 @@ export default function Tablature(props: Props) {
             padding: '0px',
             textAlign: 'center' as const,
             fontSize: '16pt',
+            marginBottom: '-4px',
+            marginTop: '-4px',
+        
             borderLeft: ''
         }
         if (tick %8 === 0) res = { ...res, borderLeft: '1px solid black' }
