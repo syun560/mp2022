@@ -15,7 +15,7 @@ export default function Tablature(props: Props) {
     const fixedRow = {
         position: 'sticky' as const,
         left: 0,
-        fontSize: '0.5em',
+        fontSize: '0.8em',
         marginBottom: '-4px',
         marginTop: '-4px',
     }
