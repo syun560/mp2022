@@ -1,7 +1,7 @@
 import React, { memo } from 'react'
 import { Finger } from './type'
 import PianoRoll from './PianoRoll/PianoRoll'
-import { NoteDatum, DebugNote } from './type'
+import { NoteDatum, DebugNote, TimeSignature } from './type'
 import Tablature from './Tablature'
 import Conductor from './Conductor'
 
@@ -10,6 +10,7 @@ interface Props {
     tuning: number[]
     noteDataArray :number[][]
     fingers: Finger[]
+    timeSignatures: TimeSignature[]
     
     // デバッグ情報表示のため
     debugNotes: DebugNote[]
@@ -81,10 +82,10 @@ export const Graph = memo((props: Props) => {
         <tbody>
             <Conductor tickLength={props.noteDataArray.length} isPlaying={false} />
 
-		    <PianoRoll noteData={props.noteData} noteDataArray={props.noteDataArray} channel={props.channel} />
+		    <PianoRoll noteData={props.noteData} noteDataArray={props.noteDataArray} channel={props.channel} timeSignatures={props.timeSignatures} />
             {/* {correctForm} */}
 
-            <Tablature tabData={props.tabData} tuning={props.tuning} />
+            <Tablature tabData={props.tabData} tuning={props.tuning} timeSignatures={props.timeSignatures} />
 
             {/* {score}
             {recall}

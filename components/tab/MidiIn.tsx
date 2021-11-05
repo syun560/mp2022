@@ -1,19 +1,23 @@
 import { Midi } from '@tonejs/midi'
 import React, { useEffect, useState } from 'react'
-import { NoteDatum } from './type'
+import { NoteDatum, TimeSignature } from './type'
 
 interface Props {
     noteData: NoteDatum[]
     setNoteData: any
+    
+    state: 'unloaded'|'onload'|'loading'|'complete'
     setState: any
+    
     setChannel: any
     setTitle: any
+
+    setMidi: any // Midiを一番上で持つ必要はないかも？
+    setTimeSignatures: any
 }
 
 const MidiIn = (props: Props) => {
     const [midiURL, setURL] = useState<string>('Fur_Elise_(original).mid')
-    const [midi, setMidi] = useState<Midi>()
-
     const tmpNotes:NoteDatum[] = []
 
     const onChangeInputFile = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -22,7 +26,8 @@ const MidiIn = (props: Props) => {
             setURL(URL.createObjectURL(file))
 
             props.setChannel(0)
-            props.setTitle(file.name)
+            props.setTitle(file.name.slice(0, -4)) // 末尾の「.mid」を削除
+            props.setState('onload')
         }
     }
 
@@ -32,7 +37,11 @@ const MidiIn = (props: Props) => {
             console.log('midi load start')
 
             const midi = await Midi.fromUrl(midiURL)
-            setMidi(midi)
+            props.setMidi(midi)
+
+            // 拍子を設定
+            props.setTimeSignatures(midi.header.timeSignatures)
+
             console.log('Tracks:')
             console.log(midi.tracks)
 
@@ -56,17 +65,16 @@ const MidiIn = (props: Props) => {
             console.log('duration:' + midi.duration)
             console.log('duration:' + midi.duration)
             console.log('midi load end')
-            // alert(midi.tracks.length)
             props.setNoteData(tmpNotes)
             props.setState('complete')
         }
         loadMIDI()
     }
 
-    // 読み込み時
-    useEffect(() => {
+    // 状態が読み込み待機中のみ
+    if (props.state==='onload') {
         load()
-    }, [midiURL])
+    }
 
     return <input className='form-control' type="file" onChange={onChangeInputFile} />
 }

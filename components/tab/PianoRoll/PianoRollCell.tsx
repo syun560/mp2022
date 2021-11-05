@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
+import { TimeSignature } from '../type'
 
 interface Props {
     selected: boolean
     note: number
     tick: number
+    timeSignatures: TimeSignature[]
 }
 
 export default function PianoRollCell(props: Props) {

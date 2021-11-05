@@ -1,12 +1,13 @@
 import React, { useCallback, createRef, useEffect, memo } from 'react'
 import PianoRollCell from './PianoRollCell'
-import { NoteDatum } from '../type'
+import { NoteDatum, TimeSignature } from '../type'
 import { noteNumberToNoteName, getMinMaxNote } from '../Lib'
 
 interface Props {
     noteData: NoteDatum[]
     noteDataArray: number[][]
     channel: number
+    timeSignatures: TimeSignature[]
 }
 
 const PianoRoll = memo((props: Props) => {
@@ -86,7 +87,7 @@ const PianoRoll = memo((props: Props) => {
                 </th>
 
                 {ticks.map((tick, indexCol) => (
-                    <PianoRollCell key={tick} note={note} tick={tick} selected={noteData.some((nd)=>cleanData(nd, note, tick))} />
+                    <PianoRollCell timeSignatures={props.timeSignatures} key={tick} note={note} tick={tick} selected={noteData.some((nd)=>cleanData(nd, note, tick))} />
                 ))}
             </tr>
         )

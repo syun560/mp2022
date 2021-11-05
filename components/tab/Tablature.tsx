@@ -1,10 +1,12 @@
 import React, { useState, memo } from 'react'
 import { noteNumberToNoteName } from './Lib' 
 import fingerboard from './fingerboard2.png'
+import { TimeSignature } from './type'
 
 interface Props {
     tabData: number[][]
     tuning: number[]
+    timeSignatures: TimeSignature[]
 }
 
 export default function Tablature(props: Props) {

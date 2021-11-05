@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from 'react'
 import { createFingerForms, fingerMoveCost } from './Lib' 
 import Graph from './Graph'
-import { NoteDatum, DebugNote } from './type'
+import { NoteDatum, DebugNote, TimeSignature } from './type'
 
 interface Props {
     channel: number
     noteData: NoteDatum[]    
+    noteDataArray: number[][]
+    setNoteDataArray: any
+    tabData: number[][]
+    setTabData: any
     w: number
+    timeSignatures: TimeSignature[]
 
     capo: number
     setCapo: any
@@ -19,7 +24,9 @@ interface Props {
     generateFlag: boolean
     setGenerateFlag: any
 
-    setDebugText: any
+    setRecall: any
+    setScore: any
+    setGenerateTime: any
 }
 
 // 入力MIDIデータを2次元配列の形に変換する
@@ -40,24 +47,13 @@ const convertData = (nd: NoteDatum[], reso:number, channel: number):number[][] =
     return res
 }
 
-const getNoteLength = (noteData: number[][]) => {
-    let length = 0
-    noteData.forEach(n => {
-        length += n.length
-    })
-    return length
-}
-
 const Tab = (props: Props) => {
     console.log('Tab components')
-    const noteDataArray = convertData(props.noteData, 240, props.channel)
-    const noteLength = getNoteLength(noteDataArray)
     
     const fingers = createFingerForms() // 動的に生成したフォームを取得する
     const mCosts = fingerMoveCost(fingers) // フォーム移動コストのテーブルを取得する
 
     // 2次元Tabデータ
-    const [tabData, setTabData] = useState<number[][]>([])
     let tmpTabData:number[][] = []
 
     // カポ、変則チューニングによる音階を決定する
@@ -66,12 +62,13 @@ const Tab = (props: Props) => {
 
     // デバッグ
     const [debugNotes, setDebugNotes] = useState<DebugNote[]>([])
-    const [exectime, setExecTime] = useState('') // 実行時間
-    const [hitCount, setHitCount] = useState(0) // ヒットカウント
 
     useEffect(() => {
         generateTab()
     },[props.generateFlag])
+    useEffect(() => {
+        props.setNoteDataArray(convertData(props.noteData, 240, props.channel))
+    },[props.channel])
     
     // カポ、変則調弦のイテレーションのための変数
     const capo_itr = [0,1,2,3,4,5,6,7,8,9,10,11,12]
@@ -128,7 +125,7 @@ const Tab = (props: Props) => {
 
             
             // 入力音高列をイテレーションする(100itr)
-            noteDataArray.forEach((nd:number[]) => {            
+            props.noteDataArray.forEach((nd:number[]) => {            
                 
                 let point_max: number = 0.0
                 let form_number: number = -1
@@ -219,20 +216,17 @@ const Tab = (props: Props) => {
                 maxScore = tmpScore
                 props.setCapo(capo)
                 props.setTuning(anno_tune)
-                setTabData(tmpTabData)
+                props.setTabData(tmpTabData)
 
                 // デバッグ表示用変数
                 setDebugNotes(tmpDebugNotes)
-
-                setHitCount(hit_cnt)
             }
         })
         })
         
         // 実行時間計測
         const endTime = performance.now()
-        const t = (endTime - startTime).toFixed(2) + ' ms'
-        setExecTime(t)
+        const t = (endTime - startTime).toFixed(2)
         
         // デバッグ情報
         let recall = 0
@@ -245,12 +239,9 @@ const Tab = (props: Props) => {
         recall /= debugNotes.length
         score /= debugNotes.length    
         
-        const debugInfo = <p>
-            Recall: {recall.toFixed(2)}<br/>
-            Score: {score.toFixed(2)}<br/>
-            Time: { exectime + ' (' + noteLength + ' notes, ' + fingers.length + ' fingers)' }
-        </p>
-        props.setDebugText(debugInfo)
+        props.setRecall(recall)
+        props.setScore(score)
+        props.setGenerateTime(t)
         
         // 終了
         props.setGenerateFlag(false)
@@ -260,12 +251,13 @@ const Tab = (props: Props) => {
     return <div>
         <div>
             <Graph 
-                tabData={tabData}
+                tabData={props.tabData}
                 tuning={tune}
-                noteData={props.noteData} noteDataArray={noteDataArray}
+                noteData={props.noteData} noteDataArray={props.noteDataArray}
                 fingers={fingers}
                 debugNotes={debugNotes}
                 channel={props.channel}
+                timeSignatures={props.timeSignatures}
                 />
             {/* <ASCIITab tabData={tabData} tuning={tune} /> */}
         </div>

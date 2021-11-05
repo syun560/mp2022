@@ -26,13 +26,20 @@ export interface DebugNote {
     cc: number
 }
 
+export interface TimeSignature {
+    measures: number
+    ticks: number
+    timeSignature: number[]
+}
+
 export interface Song {
 	date: string
 
     title: string
 	genre: string
 
-    noteData: number[][]
+    noteData: NoteDatum[]
+    noteDataArray: number[][]
     tabData: number[][]
 
 	capo: number
@@ -41,6 +48,8 @@ export interface Song {
 	generateTime: number
     score: number
     recall: number
+
+    timeSignatures: TimeSignature[]
 }
 
 export interface SaveData {
@@ -57,8 +66,14 @@ export const defaultSaveData:SaveData = {
 			tuning: [0,0,0,0,0,0],
 			generateTime: 22,
 
+            noteDataArray: [],
 			noteData: [],
 			tabData: [],
+            timeSignatures: [{
+                measures: 0,
+                ticks: 0,
+                timeSignature: [1,4]
+            }],
 
             score: 0.8,
             recall: 0.8
