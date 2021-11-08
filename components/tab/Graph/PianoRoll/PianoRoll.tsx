@@ -1,8 +1,8 @@
 import React, { useCallback, createRef, useEffect, memo, useContext } from 'react'
 import PianoRollCell from './PianoRollCell'
-import { NoteDatum, TimeSignature } from '../type'
-import { noteNumberToNoteName, getMinMaxNote } from '../Lib'
-import { StateContext, DispatchContext } from '../../../pages'
+import { NoteDatum, TimeSignature } from '../../type'
+import { noteNumberToNoteName, getMinMaxNote } from '../../Lib'
+import { StateContext, DispatchContext } from '../../../../pages'
 
 const PianoRoll = memo(() => {
     console.log('PianoRoll')

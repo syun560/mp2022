@@ -1,8 +1,8 @@
 import React, { useContext } from 'react'
-import { noteNumberToNoteName } from './Lib' 
+import { noteNumberToNoteName } from '../Lib' 
 import fingerboard from './fingerboard2.png'
-import { TimeSignature } from './type'
-import { StateContext, DispatchContext } from '../../pages'
+import { TimeSignature } from '../type'
+import { StateContext, DispatchContext } from '../../../pages'
 
 type Props = {
     tuning: number[]

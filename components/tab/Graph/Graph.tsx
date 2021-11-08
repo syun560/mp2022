@@ -1,10 +1,10 @@
 import React, { memo, useContext } from 'react'
-import { Finger } from './type'
+import { Finger } from '../type'
 import PianoRoll from './PianoRoll/PianoRoll'
-import { NoteDatum, DebugNote, TimeSignature } from './type'
+import { NoteDatum, DebugNote, TimeSignature } from '../type'
 import Tablature from './Tablature'
 import Conductor from './Conductor'
-import { StateContext, DispatchContext } from '../../pages'
+import { StateContext, DispatchContext } from '../../../pages'
 
 interface Props {
     tuning: number[]

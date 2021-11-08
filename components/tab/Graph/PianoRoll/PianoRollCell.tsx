@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { TimeSignature } from '../type'
+import { TimeSignature } from '../../type'
 
 interface Props {
     selected: boolean

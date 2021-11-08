@@ -1,5 +1,5 @@
 import React, { useState, memo } from 'react'
-import { noteNumberToNoteName } from './Lib' 
+import { noteNumberToNoteName } from '../Lib' 
 
 interface Props {
     tabData: number[][]

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { createFingerForms, fingerMoveCost } from './Lib' 
-import Graph from './Graph'
+import Graph from './Graph/Graph'
 import { NoteDatum, DebugNote, TimeSignature } from './type'
 import { StateContext, DispatchContext } from '../../pages'
 
