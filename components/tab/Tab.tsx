@@ -1,33 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { createFingerForms, fingerMoveCost } from './Lib' 
 import Graph from './Graph'
 import { NoteDatum, DebugNote, TimeSignature } from './type'
-
-interface Props {
-    channel: number
-    noteData: NoteDatum[]    
-    noteDataArray: number[][]
-    setNoteDataArray: any
-    tabData: number[][]
-    setTabData: any
-    w: number
-    timeSignatures: TimeSignature[]
-
-    capo: number
-    setCapo: any
-    capoFixedFlag: boolean
-    
-    tuning: number[]
-    setTuning: any
-    tuneFixedFlag: boolean
-
-    generateFlag: boolean
-    setGenerateFlag: any
-
-    setRecall: any
-    setScore: any
-    setGenerateTime: any
-}
+import { StateContext, DispatchContext } from '../../pages'
 
 // 入力MIDIデータを2次元配列の形に変換する
 const convertData = (nd: NoteDatum[], reso:number, channel: number):number[][] => {
@@ -47,9 +22,11 @@ const convertData = (nd: NoteDatum[], reso:number, channel: number):number[][] =
     return res
 }
 
-const Tab = (props: Props) => {
+const Tab = () => {
     console.log('Tab components')
-    
+    const state = useContext(StateContext)
+    const dispatch = useContext(DispatchContext)
+
     const fingers = createFingerForms() // 動的に生成したフォームを取得する
     const mCosts = fingerMoveCost(fingers) // フォーム移動コストのテーブルを取得する
 
@@ -58,17 +35,17 @@ const Tab = (props: Props) => {
 
     // カポ、変則チューニングによる音階を決定する
     const regularTuning = [40, 45, 50, 55, 59, 64]
-    const tune = regularTuning.map((value, i)=> props.capo + value + props.tuning[i])
+    const tune = regularTuning.map((value, i)=> state.capo + value + state.tuning[i])
 
     // デバッグ
     const [debugNotes, setDebugNotes] = useState<DebugNote[]>([])
 
     useEffect(() => {
         generateTab()
-    },[props.generateFlag])
+    },[state.generateFlag])
     useEffect(() => {
-        props.setNoteDataArray(convertData(props.noteData, 240, props.channel))
-    },[props.channel])
+        dispatch({ type:'setNoteDataArray', noteDataArray: convertData(state.noteData, 240, state.channel) })
+    },[state.channel])
     
     // カポ、変則調弦のイテレーションのための変数
     const capo_itr = [0,1,2,3,4,5,6,7,8,9,10,11,12]
@@ -98,8 +75,8 @@ const Tab = (props: Props) => {
         // 変則調弦、カポによるイテレーション（12(変則調弦)*12(カポ)=144くらい？）
         tune_itr.forEach(anno_tune=>{
         capo_itr.forEach(capo=>{
-            if (props.capoFixedFlag && capo !== props.capo) return
-            if (props.tuneFixedFlag && JSON.stringify(anno_tune) !== JSON.stringify(props.tuning)) return
+            if (state.capoFixedFlag && capo !== state.capo) return
+            if (state.tuneFixedFlag && JSON.stringify(anno_tune) !== JSON.stringify(state.tuning)) return
 
             // 利用可能な音高列を現在のチューニングとフォームから計算する（わかりずらいのでここで計算しなくても良い？）
             const formNotes: number[][] = []
@@ -125,7 +102,7 @@ const Tab = (props: Props) => {
 
             
             // 入力音高列をイテレーションする(100itr)
-            props.noteDataArray.forEach((nd:number[]) => {            
+            state.noteDataArray.forEach((nd:number[]) => {            
                 
                 let point_max: number = 0.0
                 let form_number: number = -1
@@ -167,7 +144,7 @@ const Tab = (props: Props) => {
                         const easiness = 1.0 / (1.0 + cp + cc)　// 難易度（大きいほど簡単）
                         
                         // ポイント（高いほどより適している）
-                        const point = props.w*recall + (1.0-props.w)* easiness
+                        const point = state.w*recall + (1.0-state.w)* easiness
 
                         // ポイントが高いものを選択する（配列にまとめてからMath関数を使えばいいかも）
                         if (point > point_max) {
@@ -214,9 +191,9 @@ const Tab = (props: Props) => {
                 console.log('capo:' + capo)
                 console.log('score' + tmpScore)
                 maxScore = tmpScore
-                props.setCapo(capo)
-                props.setTuning(anno_tune)
-                props.setTabData(tmpTabData)
+                dispatch({ type: 'setCapo', capo: capo })
+                dispatch({ type: 'setTuning', tuning: anno_tune })
+                dispatch({ type: 'setTabData', tabData: tmpTabData })
 
                 // デバッグ表示用変数
                 setDebugNotes(tmpDebugNotes)
@@ -226,7 +203,7 @@ const Tab = (props: Props) => {
         
         // 実行時間計測
         const endTime = performance.now()
-        const t = (endTime - startTime).toFixed(2)
+        const t = endTime - startTime
         
         // デバッグ情報
         let recall = 0
@@ -239,25 +216,24 @@ const Tab = (props: Props) => {
         recall /= debugNotes.length
         score /= debugNotes.length    
         
-        props.setRecall(recall)
-        props.setScore(score)
-        props.setGenerateTime(t)
+        dispatch({
+            type:'setDebugInfo', 
+            recall: recall,
+            generateTime: t,
+            score: score
+        })
         
         // 終了
-        props.setGenerateFlag(false)
+        dispatch({type: 'setGenerateFlag', generateFlag: false})
     }
 
 
     return <div>
         <div>
             <Graph 
-                tabData={props.tabData}
                 tuning={tune}
-                noteData={props.noteData} noteDataArray={props.noteDataArray}
                 fingers={fingers}
                 debugNotes={debugNotes}
-                channel={props.channel}
-                timeSignatures={props.timeSignatures}
                 />
             {/* <ASCIITab tabData={tabData} tuning={tune} /> */}
         </div>

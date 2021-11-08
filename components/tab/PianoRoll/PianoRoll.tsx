@@ -1,17 +1,14 @@
-import React, { useCallback, createRef, useEffect, memo } from 'react'
+import React, { useCallback, createRef, useEffect, memo, useContext } from 'react'
 import PianoRollCell from './PianoRollCell'
 import { NoteDatum, TimeSignature } from '../type'
 import { noteNumberToNoteName, getMinMaxNote } from '../Lib'
+import { StateContext, DispatchContext } from '../../../pages'
 
-interface Props {
-    noteData: NoteDatum[]
-    noteDataArray: number[][]
-    channel: number
-    timeSignatures: TimeSignature[]
-}
-
-const PianoRoll = memo((props: Props) => {
+const PianoRoll = memo(() => {
     console.log('PianoRoll')
+
+    const state = useContext(StateContext)
+    const dispatch = useContext(DispatchContext)
 
     // ピアノロールを最適な箇所に自動でスクロールする
     const ref = createRef<HTMLTableCellElement>()
@@ -28,7 +25,7 @@ const PianoRoll = memo((props: Props) => {
 
     useEffect(()=>{
         scrollToCenter()
-    }, [props.noteData])
+    }, [state.noteData])
 
     const th = {
         padding: '0px',
@@ -49,7 +46,7 @@ const PianoRoll = memo((props: Props) => {
     }
 
     // 現在のチャンネルのnoteDataを取得
-    const noteData = props.noteData.filter(f=>f.channel===props.channel)
+    const noteData = state.noteData.filter(f=>f.channel===state.channel)
     
     // 最小値と最大値
     const [minNote, maxNote] = getMinMaxNote(noteData)
@@ -58,7 +55,7 @@ const PianoRoll = memo((props: Props) => {
     const reso = 240
 
     // tickの最大値
-    let tick_max = props.noteDataArray.length
+    let tick_max = state.noteDataArray.length
 
     // ダミーの数値（Reactのkeyのため必要？）
     const notes:number[] = []
@@ -87,7 +84,7 @@ const PianoRoll = memo((props: Props) => {
                 </th>
 
                 {ticks.map((tick, indexCol) => (
-                    <PianoRollCell timeSignatures={props.timeSignatures} key={tick} note={note} tick={tick} selected={noteData.some((nd)=>cleanData(nd, note, tick))} />
+                    <PianoRollCell timeSignatures={state.timeSignatures} key={tick} note={note} tick={tick} selected={noteData.some((nd)=>cleanData(nd, note, tick))} />
                 ))}
             </tr>
         )

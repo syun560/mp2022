@@ -1,26 +1,21 @@
-import React, { memo } from 'react'
+import React, { memo, useContext } from 'react'
 import { Finger } from './type'
 import PianoRoll from './PianoRoll/PianoRoll'
 import { NoteDatum, DebugNote, TimeSignature } from './type'
 import Tablature from './Tablature'
 import Conductor from './Conductor'
+import { StateContext, DispatchContext } from '../../pages'
 
 interface Props {
-    tabData: number[][]
     tuning: number[]
-    noteDataArray :number[][]
     fingers: Finger[]
-    timeSignatures: TimeSignature[]
-    
-    // デバッグ情報表示のため
     debugNotes: DebugNote[]
-
-    // ピアノロール表示のため
-    noteData: NoteDatum[]
-    channel: number
 }
 
 export const Graph = memo((props: Props) => {
+    const state = useContext(StateContext)
+    const dispatch = useContext(DispatchContext)
+
     console.log('Graph')
     // console.log(props.tabData)
 
@@ -80,12 +75,12 @@ export const Graph = memo((props: Props) => {
     return <div style={div} className='bar'>
         <table style={table} className='table table-borderless'>
         <tbody>
-            <Conductor tickLength={props.noteDataArray.length} isPlaying={false} />
+            <Conductor tickLength={state.noteDataArray.length} isPlaying={false} />
 
-		    <PianoRoll noteData={props.noteData} noteDataArray={props.noteDataArray} channel={props.channel} timeSignatures={props.timeSignatures} />
+		    <PianoRoll />
             {/* {correctForm} */}
 
-            <Tablature tabData={props.tabData} tuning={props.tuning} timeSignatures={props.timeSignatures} />
+            <Tablature tuning={props.tuning} />
 
             {/* {score}
             {recall}

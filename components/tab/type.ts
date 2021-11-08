@@ -27,7 +27,7 @@ export interface DebugNote {
 }
 
 export interface TimeSignature {
-    measures: number
+    measures?: number | undefined
     ticks: number
     timeSignature: number[]
 }

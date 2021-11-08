@@ -1,22 +1,15 @@
 import { Midi } from '@tonejs/midi'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { NoteDatum, TimeSignature } from './type'
+import { StateContext, DispatchContext } from '../../pages'
 
-interface Props {
-    noteData: NoteDatum[]
-    setNoteData: any
+const MidiIn = () => {
+    console.log('MidiIn')
     
-    state: 'unloaded'|'onload'|'loading'|'complete'
-    setState: any
+    const state = useContext(StateContext)
+    const dispatch = useContext(DispatchContext)
+    console.log(state.appState)
     
-    setChannel: any
-    setTitle: any
-
-    setMidi: any // Midiを一番上で持つ必要はないかも？
-    setTimeSignatures: any
-}
-
-const MidiIn = (props: Props) => {
     const [midiURL, setURL] = useState<string>('Fur_Elise_(original).mid')
     const tmpNotes:NoteDatum[] = []
 
@@ -25,22 +18,25 @@ const MidiIn = (props: Props) => {
             const file = e.target.files[0]
             setURL(URL.createObjectURL(file))
 
-            props.setChannel(0)
-            props.setTitle(file.name.slice(0, -4)) // 末尾の「.mid」を削除
-            props.setState('onload')
+            dispatch({type: 'setChannel', channel: 0})
+            dispatch({type: 'setTitle', title: file.name.slice(0, -4) }) // 末尾の「.mid」を削除
+            dispatch({type: 'setAppState', appState: 'onload' }) // 読み込み開始
         }
     }
 
+    // useEffect(()=>{
+    //     load()
+    // }, [state.appState])
+
     const load = () => {
         async function loadMIDI(){
-            props.setState('loading')
+            console.log('load!')
+            dispatch({type: 'setAppState', appState: 'loading' }) // 読み込み中に設定
             console.log('midi load start')
-
             const midi = await Midi.fromUrl(midiURL)
-            props.setMidi(midi)
 
             // 拍子を設定
-            props.setTimeSignatures(midi.header.timeSignatures)
+            dispatch({type: 'setTimeSignatures', timeSignatures: midi.header.timeSignatures }) // 
 
             console.log('Tracks:')
             console.log(midi.tracks)
@@ -61,18 +57,17 @@ const MidiIn = (props: Props) => {
 
             // ロード完了
             console.log(midi.header)
-            console.log('duration:' + midi.duration)
-            console.log('duration:' + midi.duration)
-            console.log('duration:' + midi.duration)
             console.log('midi load end')
-            props.setNoteData(tmpNotes)
-            props.setState('complete')
+
+            dispatch({type: 'setNoteData', noteData: tmpNotes })
+            dispatch({type: 'setAppState', appState: 'complete' }) // 読み込み完了
         }
         loadMIDI()
     }
 
     // 状態が読み込み待機中のみ
-    if (props.state==='onload') {
+    if (state.appState==='onload') {
+        console.log('うんち')
         load()
     }
 

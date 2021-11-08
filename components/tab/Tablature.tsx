@@ -1,17 +1,19 @@
-import React, { useState, memo } from 'react'
+import React, { useContext } from 'react'
 import { noteNumberToNoteName } from './Lib' 
 import fingerboard from './fingerboard2.png'
 import { TimeSignature } from './type'
+import { StateContext, DispatchContext } from '../../pages'
 
-interface Props {
-    tabData: number[][]
+type Props = {
     tuning: number[]
-    timeSignatures: TimeSignature[]
 }
 
 export default function Tablature(props: Props) {
     console.log('Tablature')
     
+    const state = useContext(StateContext)
+    const dispatch = useContext(DispatchContext)
+
     const fixedRow = {
         position: 'sticky' as const,
         left: 0,
@@ -49,7 +51,7 @@ export default function Tablature(props: Props) {
     // タブ譜を同時に表示する
     const tab = <>{[5,4,3,2,1,0].map(s=><tr key={s}>
         <th style={fixedRow} className='table-secondary'>{noteNumberToNoteName(props.tuning[s])}</th>
-        {props.tabData.map((t, i)=><td key={i} style={tdStyle(i)}>
+        {state.tabData.map((t, i)=><td key={i} style={tdStyle(i)}>
             <span style={spanStyle}>
                 {t[s]!==-1 ? t[s]: ''}
             </span>
