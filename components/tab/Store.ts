@@ -12,7 +12,7 @@ type State = {
     tuning: number[]
 
     channel: number
-    
+
     // 曲データ
     title: string
     timeSignatures: TimeSignature[]

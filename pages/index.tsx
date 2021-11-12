@@ -3,6 +3,7 @@ import Layout from '../components/Layout'
 import React, { createContext, useReducer } from 'react'
 import { useRouter } from 'next/router'
 
+// コンポーネント
 import usePersist from '../components/Persist'
 import Tab from '../components/tab/Tab'
 import MidiIn from '../components/tab/MidiIn'
@@ -10,19 +11,21 @@ import EventList from '../components/tab/EventList'
 import TrackSelector from '../components/tab/TrackSelector'
 import Param from '../components/tab/Param'
 import Tuning from '../components/tab/Tuning'
-import { Song, defaultSaveData } from '../components/tab/type'
+import Sequencer from '../components/tab/Sequencer'
+import Instrument from '../components/tab/Graph/Instrument'
 
+import { Song, defaultSaveData } from '../components/tab/type'
 import { reducer, initialState, Action } from '../components/tab/Store'
+import { seqReducer, SeqState, initialSeqState, SeqAction } from '../components/tab/SequencerStore'
 
 export const StateContext = createContext(initialState)
 export const DispatchContext = createContext<React.Dispatch<Action>>(()=>{})
+export const SequencerContext = createContext<{seqState: SeqState, seqDispatch: React.Dispatch<SeqAction>}>({seqState: initialSeqState, seqDispatch: ()=>{}})
 
 const Home: NextPage = () => {
-	console.log('index.tsx')
-	
 	const [saveData, setSaveData] = usePersist('tab', defaultSaveData)
-	const [state, dispatch] = useReducer(reducer, initialState);
-	console.log(state.appState)
+	const [state, dispatch] = useReducer(reducer, initialState)
+	const [seqState, seqDispatch] = useReducer(seqReducer, initialSeqState) 
 
     // クエリパラメータを用いて曲読み込み
 	const router = useRouter()
@@ -67,6 +70,7 @@ const Home: NextPage = () => {
 		<div className="my-2">
 		<StateContext.Provider value={state}>
 		<DispatchContext.Provider value={dispatch}>
+		<SequencerContext.Provider value={{seqState, seqDispatch}}>
 			<MidiIn />
 			
 			{state.appState !== 'complete'?
@@ -75,7 +79,7 @@ const Home: NextPage = () => {
 			<div className='row mt-2'>
 				<div className="col-lg-3">
 					<TrackSelector />
-					<EventList noteData={state.noteData} channel={state.channel} />
+					{/* <EventList noteData={state.noteData} channel={state.channel} /> */}
 					<Param />
 					<Tuning />
 					<div className='text-center'>
@@ -83,7 +87,7 @@ const Home: NextPage = () => {
 	            		?<button className="btn btn-success" disabled>Generating...</button>
 	            		:<button onClick={()=>dispatch({type: 'setGenerateFlag', generateFlag:true})} className="btn btn-success">Generate</button>
 						}
-						<button onClick={save}className="btn btn-secondary ms-2">Save</button>
+						<button onClick={save} className="btn btn-secondary ms-2">Save</button>
 					</div>
 					<hr />
 					<p>
@@ -98,11 +102,13 @@ const Home: NextPage = () => {
 					</p>
 				</div>
 				<div className="col-lg-9">
-				    <button className="btn btn-primary mb-3">Play</button>
+					<Instrument />
+					<Sequencer />
 				    <Tab />
 				</div>
 			</div>
 			}
+		</SequencerContext.Provider>
 		</DispatchContext.Provider>
 		</StateContext.Provider>
 		</div>

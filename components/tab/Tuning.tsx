@@ -32,8 +32,6 @@ const Tuning = () => {
         <p>
             <input className='form-check-input' type="checkbox" checked={state.capoFixedFlag}
                 onChange={(e)=>{
-                    console.log('チェックボックス')
-                    console.log(e.target.checked)
                     dispatch({ type: 'setCapoFixedFlag', capoFixedFlag: e.target.checked })
                 }}/>
             <label className='mx-2'>Capo:</label> 

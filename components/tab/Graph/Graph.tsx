@@ -1,9 +1,9 @@
-import React, { memo, useContext } from 'react'
+import React, { memo, useContext, useState } from 'react'
 import { Finger } from '../type'
 import PianoRoll from './PianoRoll/PianoRoll'
-import { NoteDatum, DebugNote, TimeSignature } from '../type'
+import { DebugNote } from '../type'
 import Tablature from './Tablature'
-import Conductor from './Conductor'
+import { Conductor } from './Conductor'
 import { StateContext, DispatchContext } from '../../../pages'
 
 interface Props {
@@ -12,12 +12,10 @@ interface Props {
     debugNotes: DebugNote[]
 }
 
-export const Graph = memo((props: Props) => {
+const Graph = (props: Props) => {
     const state = useContext(StateContext)
     const dispatch = useContext(DispatchContext)
-
-    console.log('Graph')
-    // console.log(props.tabData)
+    const [debugInfoFlag, setDebugInfoFlag] = useState(false)
 
     const chord = ['F', 'G', 'C']
     const div = {
@@ -75,21 +73,25 @@ export const Graph = memo((props: Props) => {
     return <div style={div} className='bar'>
         <table style={table} className='table table-borderless'>
         <tbody>
-            <Conductor tickLength={state.noteDataArray.length} isPlaying={false} />
 
 		    <PianoRoll />
-            {/* {correctForm} */}
+            <Conductor tickLength={state.noteDataArray.length} />
 
             <Tablature tuning={props.tuning} />
 
-            {/* {score}
+            {debugInfoFlag ? <>
+            {correctForm}
+            {score}
             {recall}
             {easiness}
             {cp}
-            {cc} */}
+            {cc}
+            </>
+            :<></>}
+            <tr><td onClick={()=>setDebugInfoFlag(!debugInfoFlag)}>{debugInfoFlag ? 'hide' : 'show'}</td></tr>
         </tbody>
     </table>
     </div>
-})
+}
 
-export default Graph
+export default memo(Graph)

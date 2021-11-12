@@ -1,41 +1,23 @@
-import React, { useCallback, createRef, useEffect, memo, useContext } from 'react'
+import React, { memo, useContext } from 'react'
 import PianoRollCell from './PianoRollCell'
-import { NoteDatum, TimeSignature } from '../../type'
+import { NoteDatum } from '../../type'
 import { noteNumberToNoteName, getMinMaxNote } from '../../Lib'
-import { StateContext, DispatchContext } from '../../../../pages'
+import { StateContext } from '../../../../pages'
 
-const PianoRoll = memo(() => {
-    console.log('PianoRoll')
-
+const PianoRoll = () => {
     const state = useContext(StateContext)
-    const dispatch = useContext(DispatchContext)
-
-    // ピアノロールを最適な箇所に自動でスクロールする
-    const ref = createRef<HTMLTableCellElement>()
-    const scrollToCenter = useCallback(() => {
-        console.log('scrolled!')
-        ref?.current?.scrollIntoView({
-            behavior: 'smooth',
-            block: 'center',
-        })
-    }, [ref])
-
-    // スクロールするNote（中心のノート）
-    const baseNote = 60
-
-    useEffect(()=>{
-        scrollToCenter()
-    }, [state.noteData])
 
     const th = {
         padding: '0px',
         borderRight: '1px black solid',
         position: 'sticky' as const,
+        background: '',
         left: 0
     }
     const th_base = {
         ...th,
-        borderBottom: '1px black solid'
+        borderBottom: '1px black solid',
+        background: ''
     }
     const note_name_style = {
         fontSize: '0.5em',
@@ -61,14 +43,36 @@ const PianoRoll = memo(() => {
     const notes:number[] = []
     for (let i = 127; i >= 0; i--) notes.push(i)
     const ticks:number[] = []
-    for (let i = 0; i < tick_max; i++) ticks.push(i)
+    for (let i = 0; i <= tick_max; i++) ticks.push(i)
 
     // ピアノロールに表示するデータの設定
     const cleanData = (nd :NoteDatum, note: number, tick: number):boolean => {
         return nd.note === note && nd.time === tick * reso
     }
 
-    const c_major = [0,2,4,5,7,9,11]
+    // タブデータにあるかどうかの判定
+    const regularTuning = [40, 45, 50, 55, 59, 64]
+    const tune = regularTuning.map((value, i)=> state.capo + value + state.tuning[i])
+    const isTabData = (note: number, tick: number):boolean => {
+        if (tick < state.tabData.length) {
+            return state.tabData[tick].map((t, i)=>{
+                if (t === -1) return -100
+                return t+tune[i]
+            }).includes(note) 
+        }
+        else return false
+    }
+
+    // アボイドノートで色を変える
+    const st = (note: number) => {
+        let res = th
+        const c_major = [0,2,4,5,7,9,11]
+        if (!c_major.includes(note % 12)) {
+            res = { ...res, background: '#e8faff' }
+        }    
+        return res
+    } 
+    
 
     // ピアノロール生成
     const roll = notes.map((fuga, indexRow) => {
@@ -77,19 +81,24 @@ const PianoRoll = memo(() => {
         else return (
             <tr key={fuga}>
                 {/* 音階 */}
-                <th style={note % 12 ? th : th_base} ref={note === baseNote ? ref : null} className={c_major.includes(note % 12) ? '': 'table-secondary'}>
+                <th style={note % 12 ? st(note) : th_base}>
                     <div style={note_name_style}>
                         {note % 12 === 0 || note === minNote || note === maxNote ? noteNumberToNoteName(note) : ''}
                     </div>
                 </th>
 
                 {ticks.map((tick, indexCol) => (
-                    <PianoRollCell timeSignatures={state.timeSignatures} key={tick} note={note} tick={tick} selected={noteData.some((nd)=>cleanData(nd, note, tick))} />
+                    <PianoRollCell
+                        timeSignatures={state.timeSignatures}
+                        key={tick} note={note} tick={tick}
+                        selected={noteData.some((nd)=>cleanData(nd, note, tick))}
+                        tabSelected={isTabData(note, tick)}
+                    />
                 ))}
             </tr>
         )
     })
     return <>{roll}</>
-})
+}
 
-export default PianoRoll
+export default memo(PianoRoll)

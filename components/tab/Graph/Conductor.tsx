@@ -1,19 +1,37 @@
-import React, { useState, useEffect } from 'react'
-import * as Tone from "tone";
+import React, { useContext, useRef, createRef, useState, useEffect } from 'react'
+import { SequencerContext } from '../../../pages'
 
 interface Props {
     tickLength: number
-    isPlaying: boolean
 }
 
-export default function Conductor (props: Props){
-    console.log("conductor")
-    const [nowTick, setNowTick] = useState(0)
-    const [synth, setSynth] = useState<Tone.Synth>()
+export function Conductor (props: Props){
+    const {seqState, seqDispatch} = useContext(SequencerContext)
+
+    // ピアノロールを最適な箇所に自動でスクロールする
+    // refをtickLengthぶん作ってみる
+    const refs = useRef<React.RefObject<HTMLTableCellElement>[]>([])
+    for (let i = 0; i < props.tickLength; i++) {
+        refs.current[i] = (createRef<HTMLTableCellElement>())
+    }
+    const scrollToCenter = (i: number) => {
+        // console.log(refs.current[i])
+        // if (refs.current[i])console.log('scrolled!')
+        if (i < props.tickLength)
+            refs.current[i].current?.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center',
+                inline: 'center',
+            })
+    }
+    const doClick = (tick: number) => {
+        seqDispatch({type: 'setNowTick', nowTick: tick})
+    }
     
-    useEffect(()=>{
-        setSynth(new Tone.Synth().toDestination())
-    }, [])
+    // いい感じのところでスクロールする。
+    useEffect(()=> {
+        if (seqState.nowTick % 20 === 0 && seqState.isPlaying) scrollToCenter(seqState.nowTick + 10)
+    }, [seqState.nowTick, seqState.isPlaying])
 
     const tdStyle = (tick: number) => {
         let res = {
@@ -27,19 +45,19 @@ export default function Conductor (props: Props){
     const cells = (()=> {
         const res: JSX.Element[] = []
         for (let tick = 0; tick <= props.tickLength; tick++) {
-            res.push(<td key={tick} style={tdStyle(tick)} className={nowTick === tick ? 'table-danger' : ''}>
-                {tick % 8 === 0 ? tick / 8 : ''}
-            </td>)
+            res.push(
+                <td key={tick} style={tdStyle(tick)} ref={refs.current[tick]}
+                    className={seqState.nowTick - 1 === tick ? 'table-danger' : ''}
+                    onClick={()=>doClick(tick)} >
+                    {tick % 8 === 0 ? tick / 8 : ''}
+                </td>
+            )
         }
         return res
     })()
 
-    const test = () => {
-        synth?.triggerAttackRelease("C4", "8n")
-    }
-
     return <tr>
-        <th style={tdStyle(1)} onClick={test}></th>
+        <th style={tdStyle(1)} className={seqState.nowTick === 0 ? 'table-danger' : ''}></th>
         {cells}
     </tr>
 }

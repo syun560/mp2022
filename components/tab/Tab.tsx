@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useMemo, memo, useEffect, useContext } from 'react'
 import { createFingerForms, fingerMoveCost } from './Lib' 
 import Graph from './Graph/Graph'
 import { NoteDatum, DebugNote, TimeSignature } from './type'
@@ -23,12 +23,11 @@ const convertData = (nd: NoteDatum[], reso:number, channel: number):number[][] =
 }
 
 const Tab = () => {
-    console.log('Tab components')
     const state = useContext(StateContext)
     const dispatch = useContext(DispatchContext)
 
-    const fingers = createFingerForms() // 動的に生成したフォームを取得する
-    const mCosts = fingerMoveCost(fingers) // フォーム移動コストのテーブルを取得する
+    const fingers = useMemo(createFingerForms, []) // 動的に生成したフォームを取得する
+    const mCosts = useMemo(()=>fingerMoveCost(fingers), []) // フォーム移動コストのテーブルを取得する
 
     // 2次元Tabデータ
     let tmpTabData:number[][] = []
@@ -50,20 +49,23 @@ const Tab = () => {
     // カポ、変則調弦のイテレーションのための変数
     const capo_itr = [0,1,2,3,4,5,6,7,8,9,10,11,12]
     const tune_itr = [
-        [0,0,0,0,0,0],
+        [0,0,0,0,0,0],  // レギュラー
         [-1,0,0,0,0,0],
         [0,-1,0,0,0,0],
         [0,0,-1,0,0,0],
         [0,0,0,-1,0,0],
         [0,0,0,0,-1,0],
         [0,0,0,0,0,-1],
-        [-2,0,0,0,0,0],
+        [-2,0,0,0,0,0], // DropD
         [0,-2,0,0,0,0],
         [0,0,-2,0,0,0],
         [0,0,0,-2,0,0],
         [0,0,0,0,-2,0],
         [0,0,0,0,0,-2],
-        [0,0,2,0,0,0]
+        [0,0,2,0,0,0],
+
+        // Openコード
+        [-2, 0, 0, -1, -2, -2] // Open D
     ]
 
     const generateTab = () => {
@@ -234,10 +236,10 @@ const Tab = () => {
                 tuning={tune}
                 fingers={fingers}
                 debugNotes={debugNotes}
-                />
+            />
             {/* <ASCIITab tabData={tabData} tuning={tune} /> */}
         </div>
     </div>
 }
 
-export default Tab
+export default memo(Tab)

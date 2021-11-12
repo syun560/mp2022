@@ -4,12 +4,8 @@ import { NoteDatum, TimeSignature } from './type'
 import { StateContext, DispatchContext } from '../../pages'
 
 const MidiIn = () => {
-    console.log('MidiIn')
-    
     const state = useContext(StateContext)
     const dispatch = useContext(DispatchContext)
-    console.log(state.appState)
-    
     const [midiURL, setURL] = useState<string>('Fur_Elise_(original).mid')
     const tmpNotes:NoteDatum[] = []
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, memo } from 'react'
 import { NoteDatum } from './type'
 import { noteNumberToNoteName } from './Lib'
 
@@ -7,7 +7,7 @@ interface Props {
     channel: number
 }
 
-export default function EventList (props: Props){
+const EventList = (props: Props) => {
     const noteData = props.noteData.filter(f=>f.channel===props.channel)
 
     const list = noteData.map((n, i)=><tr key={i}>
@@ -46,3 +46,5 @@ export default function EventList (props: Props){
         </table>
     </div>
 }
+
+export default memo(EventList)

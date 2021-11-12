@@ -21,7 +21,7 @@ const Songs: NextPage = () => {
 				<tr>
 					<th>Title</th>
 					{/* <th>Genre</th> */}
-					<th>Date</th>
+					{/* <th>Date</th> */}
 					<th>Capo</th>
 					<th>Tuning</th>
 					<th>generateTime(ms)</th>
@@ -38,7 +38,7 @@ const Songs: NextPage = () => {
             			query: { song_id: i },
           			}}>{s.title}</Link></td>
 					{/* <td>{s.genre}</td> */}
-					<td>{s.date}</td>
+					{/* <td>{s.date}</td> */}
 					<td>{s.capo}</td>
 					<td>{s.tuning.join()}</td>
 					<td>{s.generateTime}</td>
