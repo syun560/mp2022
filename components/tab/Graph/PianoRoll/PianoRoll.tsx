@@ -26,6 +26,15 @@ const PianoRoll = () => {
         hegiht: '8px',
         width: '20px',
     }
+    // 弦ごとに色を設定
+    const stringColor = [
+        '#f7bfff',
+        '#c1bfff',
+        '#a2f3f5',
+        '#bfffd0',
+        '#ecffbf',
+        '#ffd5bf',
+    ]
 
     // 現在のチャンネルのnoteDataを取得
     const noteData = state.noteData.filter(f=>f.channel===state.channel)
@@ -69,7 +78,10 @@ const PianoRoll = () => {
         const c_major = [0,2,4,5,7,9,11]
         if (!c_major.includes(note % 12)) {
             res = { ...res, background: '#e8faff' }
-        }    
+        }
+        if (tune.includes(note)) {
+            res = { ...res, background: stringColor[tune.indexOf(note)]}
+        }
         return res
     } 
     

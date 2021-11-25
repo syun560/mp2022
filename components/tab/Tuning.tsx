@@ -24,7 +24,7 @@ const Tuning = () => {
 
     const tuning_option = <>
         {state.tuning.map((x:number, i:number)=>
-            <input style={input} type="number" key={i} min={-2} max={2} value={x} onChange={(e)=>changeTuning(e,i)} />
+            <input style={input} type="number" key={i} min={-5} max={5} value={x} onChange={(e)=>changeTuning(e,i)} />
         )}
     </>
 

@@ -83,6 +83,7 @@ const Home: NextPage = () => {
 					<Param />
 					<Tuning />
 					<div className='text-center'>
+						<button className='btn btn-secondary mx-2' onClick={()=>dispatch({type: 'paramReset'})}>Reset</button>
 						{state.generateFlag
 	            		?<button className="btn btn-success" disabled>Generating...</button>
 	            		:<button onClick={()=>dispatch({type: 'setGenerateFlag', generateFlag:true})} className="btn btn-success">Generate</button>
@@ -91,9 +92,9 @@ const Home: NextPage = () => {
 					</div>
 					<hr />
 					<p>
-                        Recall: {state.recall.toFixed(2)}<br/>
-                        Score: {state.score.toFixed(2)}<br/>
-                        Time: { state.generateTime }
+                        Recall: {state.recall.toFixed(3)}<br/>
+                        Score: {state.score.toFixed(3)}<br/>
+                        Time: { state.generateTime.toFixed(3) }
                     </p>
 					<p>
 						{/* BPM: {midi?.header.tempos[0].bpm}<br /> */}

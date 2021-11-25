@@ -1,5 +1,5 @@
 import React, { useContext, useRef, createRef, useState, useEffect } from 'react'
-import { SequencerContext } from '../../../pages'
+import { SequencerContext, StateContext } from '../../../pages'
 
 interface Props {
     tickLength: number
@@ -7,6 +7,7 @@ interface Props {
 
 export function Conductor (props: Props){
     const {seqState, seqDispatch} = useContext(SequencerContext)
+    const state = useContext(StateContext)
 
     // ピアノロールを最適な箇所に自動でスクロールする
     // refをtickLengthぶん作ってみる
@@ -32,13 +33,14 @@ export function Conductor (props: Props){
     useEffect(()=> {
         if (seqState.nowTick % 20 === 0 && seqState.isPlaying) scrollToCenter(seqState.nowTick + 10)
     }, [seqState.nowTick, seqState.isPlaying])
-
+    
+    const a = state.timeSignatures[0].timeSignature[0] * 2
     const tdStyle = (tick: number) => {
         let res = {
             borderBottom: '1px solid black',
             borderLeft: ''
         }
-        if (tick %8 === 0) res = { ...res, borderLeft: '1px solid black' }
+        if (tick % a === 0) res = { ...res, borderLeft: '1px solid black' }
         return res
     }
 
@@ -49,7 +51,7 @@ export function Conductor (props: Props){
                 <td key={tick} style={tdStyle(tick)} ref={refs.current[tick]}
                     className={seqState.nowTick - 1 === tick ? 'table-danger' : ''}
                     onClick={()=>doClick(tick)} >
-                    {tick % 8 === 0 ? tick / 8 : ''}
+                    {tick % a === 0 ? tick / a : ''}
                 </td>
             )
         }

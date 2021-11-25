@@ -1,8 +1,7 @@
 import React, { useContext } from 'react'
 import { noteNumberToNoteName } from '../Lib' 
 import fingerboard from './fingerboard2.png'
-import { TimeSignature } from '../type'
-import { StateContext, DispatchContext } from '../../../pages'
+import { StateContext } from '../../../pages'
 
 type Props = {
     tuning: number[]
@@ -10,7 +9,6 @@ type Props = {
 
 export default function Tablature(props: Props) {
     const state = useContext(StateContext)
-    const dispatch = useContext(DispatchContext)
 
     let fixedRow = {
         position: 'sticky' as const,
@@ -23,12 +21,12 @@ export default function Tablature(props: Props) {
 
     // 弦ごとに色を設定
     const stringColor = [
-        'gray',
-        'gray',
-        'gray',
-        'gray',
-        'gray',
-        'gray',
+        '#f7bfff',
+        '#c1bfff',
+        '#a2f3f5',
+        '#bfffd0',
+        '#ecffbf',
+        '#ffd5bf',
     ]
     const th = stringColor.map(s=>{
         return {
@@ -53,7 +51,8 @@ export default function Tablature(props: Props) {
         
             borderLeft: ''
         }
-        if (tick %8 === 0) res = { ...res, borderLeft: '1px solid black' }
+        const a = state.timeSignatures[0].timeSignature[0] * 2
+        if (tick % a === 0) res = { ...res, borderLeft: '1px solid black' }
         return res
     }
     const spanStyle = {

@@ -1,3 +1,4 @@
+import { StateContext } from '../../pages'
 import { NoteDatum, SaveData, Song, TimeSignature } from './type'
 
 type AppState = 'unloaded'|'onload'|'loading'|'complete'
@@ -61,6 +62,7 @@ export type Action =
     {type: 'load'       ; song: Song}|
 
     {type: 'start'      ;}|
+    {type: 'paramReset' ;}|
     
     {type: 'setChannel' ; channel: number}|
     {type: 'setTitle'   ; title: string}|
@@ -96,6 +98,15 @@ export const reducer = (state: State, action: Action): State => {
 			tabData: song.tabData,
 			timeSignatures: song.timeSignatures
         }
+    case 'paramReset':
+        return {
+            ...state,
+            capo: 0,
+            tuning: [0,0,0,0,0,0],
+            capoFixedFlag: true,
+            tuneFixedFlag: true
+        }
+
     case 'setAppState': 
         console.log('setAppState:' + action.appState)
         return { ...state, appState: action.appState }    
@@ -117,6 +128,7 @@ export const reducer = (state: State, action: Action): State => {
     case 'setNoteDataArray' : return { ...state, noteDataArray: action.noteDataArray }
     case 'setTabData' : return { ...state, tabData: action.tabData }
     case 'setDebugInfo': return { ...state, score: action.score, recall: action.recall, generateTime: action.generateTime}
+
 
     default:
         return state

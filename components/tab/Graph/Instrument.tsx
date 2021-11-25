@@ -90,7 +90,7 @@ const Instrument = () => {
     return <span className='me-2'>
         {/* <tr><td>Input: </td><td><select>{ in_items }</select></td></tr> */}
           
-        MidiOut: <select className='' onChange={(e)=>setSelectedOutPortID(e.target.value)}
+        MidiOut: <select onChange={(e)=>setSelectedOutPortID(e.target.value)}
         defaultValue="-1">
             { out_items }
         </select>
