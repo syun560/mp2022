@@ -1,5 +1,25 @@
-import { Note } from "@tonejs/midi/dist/Note"
 import { Finger, RawFinger, NoteDatum } from "./type"
+
+// レギュラーチューニング
+export const regularTuning = [40, 45, 50, 55, 59, 64]
+
+// 入力MIDIデータを2次元配列の形に変換する
+export const convertData = (nd: NoteDatum[], reso:number, channel: number):number[][] => {
+    const res:number[][] = []
+
+    // 指定されたチャンネルのNotesを取り出す
+    const found = nd.filter(n=>n.channel===channel)
+
+    // もし無かったらそのままリターン
+    if (found.length < 1) return res
+
+    const end = found[found.length - 1].time
+
+    for (let i = 0; i <= end; i += reso) {
+        res.push(found.filter(n=>n.time === i).map(x=>x.note))
+    }
+    return res
+}
 
 // ノートナンバー（64）をノート（C5）に変換する
 export function noteNumberToNoteName(num: number): string {
@@ -79,6 +99,40 @@ export function fingerMoveCost(fingers: Finger[]): number[][] {
     })
     return res
 }
+
+// 変則調弦を返す
+export const tunes = [
+    [0,0,0,0,0,0],  // レギュラー
+    
+    // 1音変化
+    [-1, 0, 0, 0, 0, 0],
+    [ 0,-1, 0, 0, 0, 0],
+    [0,0,-1,0,0,0],
+    [0,0,0,-1,0,0],
+    [0,0,0,0,-1,0],
+    [0,0,0,0,0,-1],
+    [-2,0,0,0,0,0], // DropD
+    [0,-2,0,0,0,0],
+    [0,0,-2,0,0,0],
+    [0,0,0,-2,0,0],
+    [0,0,0,0,-2,0],
+    [0,0,0,0,0,-2],
+    [0,0,2,0,0,0],
+
+    // 変則
+    [-2, 0, 0, 0, -2, -2],  // DADGAD
+    [-2, 0, 0, -3, -2, -2], // DADEAD
+
+    // Openコード
+    [-2, -2,  0, -1, -2, -2], // Open G
+    [ 0,  0,  2,  2,  2,  0], // Open A
+    [-2,  0,  0,  1, -2, -2], // Open D
+    [ 0,  2,  2,  1,  0,  0], // Open E
+    [-2, -2,  0,  0, -1, -2], // Open Gm
+    [ 0,  0,  2,  2,  1,  0], // Open Am
+    [ 0,  2,  2,  0,  0,  0], // Open Em
+    [-2,  0,  0, -2, -2, -2], // Open Dm
+]
 
 // フォームを返す
 export function createFingerForms(): Finger[] {
