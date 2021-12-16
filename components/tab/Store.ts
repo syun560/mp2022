@@ -123,7 +123,9 @@ export const reducer = (state: State, action: Action): State => {
         console.log('setCapoFixedFlag')
         return { ...state, capoFixedFlag: action.capoFixedFlag }
     case 'setTuneFixedFlag': return { ...state, tuneFixedFlag: action.tuneFixedFlag }
-    case 'setGenerateFlag' : return { ...state, generateFlag: action.generateFlag }
+    case 'setGenerateFlag' :
+        console.log('GenerateFlag: '+ action.generateFlag)
+        return { ...state, generateFlag: action.generateFlag }
     case 'setNoteData' : return { ...state, noteData: action.noteData }
     case 'setNoteDataArray' : return { ...state, noteDataArray: action.noteDataArray }
     case 'setTabData' : return { ...state, tabData: action.tabData }

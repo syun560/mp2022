@@ -19,7 +19,10 @@ const Tab = () => {
     // デバッグ表示用変数
     const [dn, setDn] = useState<DebugNote[]>([])
 
-    useEffect(() => { generate() },[state.generateFlag])
+    useEffect(() => { 
+        if (state.generateFlag === true)
+            generate()
+    },[state.generateFlag])
     useEffect(() => { dispatch({ type:'setNoteDataArray', noteDataArray: convertData(state.noteData, 240, state.channel) })
     },[state.channel])
 
