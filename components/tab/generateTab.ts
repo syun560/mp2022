@@ -57,6 +57,7 @@ export const generateTab = (
         // タブ譜を確定する
         if (score > maxScore) {
             console.log('capo:' + c)
+            console.log('tuning:' + anno_tune)
             console.log('score' + score)
             maxScore = score
             res = {

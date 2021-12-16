@@ -8,7 +8,9 @@ export const solveShortestPath = (
     mCosts: number[][],
 ) => {
 
-    if (noteDataArray.length < 1) {
+    const ndlength = noteDataArray.length
+
+    if (ndlength < 1) {
         return {
             score: 0,
             tabData: []
@@ -22,12 +24,12 @@ export const solveShortestPath = (
     let prevVertexPoint: number[] = new Array(fingers.length).fill(0)
     let nowVertexPoint: number[] = new Array(fingers.length).fill(0)
     // 経路のインデックスを記憶しておくポインタ(2次元)
-    const backVertex: number[][] = new Array(noteDataArray.length)
+    const backVertex: number[][] = new Array(ndlength)
     for (let y = 0; y < fingers.length; y++) {
         backVertex[y] = new Array(fingers.length).fill(0)
     }
-    // 押さえる指の形(3次元)
-    const tmp_fingers: number[][][] = Array.from(new Array(noteDataArray.length), () => {
+    // 押さえる指の形(3次元) [ノート][フォーム][指(6)]
+    const tmp_fingers: number[][][] = Array.from(new Array(ndlength), () => {
         return Array.from(new Array(fingers.length), () => new Array(6).fill(0))
     })
 
@@ -42,6 +44,9 @@ export const solveShortestPath = (
             cc: 0,
             cost: 1.0,
         }
+
+        // 現在の音後列の頂点について調べる
+        nowVertexPoint = new Array(fingers.length).fill(0)
 
         // 配列が0のときはスキップする
         // if (nd.length > 0) {
@@ -65,19 +70,16 @@ export const solveShortestPath = (
 
                 let recall = 1.0
                 if (nd.length > 0)
-                    recall = ring_cnt / nd.length　// 再現度（鳴らす音の数/元の音の数）
+                    recall = ring_cnt / nd.length // 再現度（鳴らす音の数/元の音の数）
                 if (recall > 1.0) recall = 1.0 // 暫定的な処置（できれば重複して数えないようにしたい。）
-                const cp = fingers[formIndex].cost　// 押弦コスト
-
-                // 現在の音後列の頂点について調べる
-                nowVertexPoint = new Array(fingers.length).fill(0)
+                const cp = fingers[formIndex].cost // 押弦コスト
 
                 // ポイントが以前より高ければ選択する
                 // ループする（以前のフォーム100itrぶん）
                 prevVertexPoint.forEach((prev, prev_index)=>{
                     let cc = 0
                     if (mCosts.length > 0) cc = mCosts[prev_index][formIndex] // フォーム変更コスト
-                    const easiness = 1.0 / (1.0 + cp + cc)　// 難易度（大きいほど簡単）
+                    const easiness = 1.0 / (1.0 + cp + cc) // 難易度（大きいほど簡単）
 
                     // ポイント（高いほどより適している）
                     const point = w*recall + (1.0-w)*easiness // その時のポイント
@@ -126,24 +128,22 @@ export const solveShortestPath = (
     // 最後の列の一番大きなスコアの頂点のスコアとインデックスを取得
     let maxScore = 0
     let maxScoreIndex = 0
-    nowVertexPoint.forEach((n,index)=>{
+    nowVertexPoint.forEach((n, index)=>{
         if (maxScore < n) {
             maxScore = n
             maxScoreIndex = index
         }
     })
     
-    
-
     // 最後のフィンガリングをプッシュする
     const tmpFingering:number[][] = []
     const form_number:number[] = []
-    tmpFingering.push(tmp_fingers[noteDataArray.length-1][maxScoreIndex])
+    tmpFingering.push(tmp_fingers[ndlength-1][maxScoreIndex])
     form_number.push(maxScoreIndex)
-    
+
     // バックトレースを行う
-    let next = backVertex[noteDataArray.length - 1][maxScoreIndex]
-    for (let x = noteDataArray.length - 1; x > 0; x--) {
+    let next = backVertex[ndlength - 1][maxScoreIndex]
+    for (let x = ndlength - 2; x >= 0; x--) {
         tmpFingering.push(tmp_fingers[x][next])
         form_number.push(next)
         next = backVertex[x][next]
