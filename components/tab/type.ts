@@ -44,9 +44,12 @@ export interface Song {
 
 	capo: number
     tuning: number[]
+    w: number
     
 	generateTime: number
     score: number
+    
+    easiness: number
     recall: number
 
     timeSignatures: TimeSignature[]
@@ -63,6 +66,7 @@ export const defaultSaveData:SaveData = {
 			title: '主よ人の望みよ、喜びよ',
 			genre: 'classic',
 			capo: 12,
+            w: 0.9,
 			tuning: [0,0,0,0,0,0],
 			generateTime: 22,
 
@@ -76,6 +80,7 @@ export const defaultSaveData:SaveData = {
             }],
 
             score: 0.8,
+            easiness: 0.8,
             recall: 0.8
 		}
 	]

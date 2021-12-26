@@ -1,6 +1,6 @@
 import type { NextPage } from 'next'
 import Layout from '../components/Layout'
-import { Song, SaveData, defaultSaveData } from '../components/tab/type'
+import { defaultSaveData } from '../components/tab/type'
 import usePersist from '../components/Persist'
 import Link from 'next/link'
 
@@ -24,9 +24,11 @@ const Songs: NextPage = () => {
 					{/* <th>Date</th> */}
 					<th>Capo</th>
 					<th>Tuning</th>
+					<th>w</th>
 					<th>generateTime(ms)</th>
 					<th>NotesNum</th>
 					<th>Recall</th>
+					<th>Easiness</th>
 					<th>Score</th>
 					<th></th>
 				</tr>
@@ -41,10 +43,12 @@ const Songs: NextPage = () => {
 					{/* <td>{s.date}</td> */}
 					<td>{s.capo}</td>
 					<td>{s.tuning.join()}</td>
-					<td>{s.generateTime.toFixed(2)}</td>
+					<td>{s.w?.toFixed(3)}</td>
+					<td>{s.generateTime.toFixed(3)}</td>
 					<td>{s.noteData.length}</td>
-					<td>{s.recall.toFixed(2)}</td>
-					<td>{s.score.toFixed(2)}</td>
+					<td>{s.recall.toFixed(3)}</td>
+					<td>{s.easiness?.toFixed(3)}</td>
+					<td>{s.score.toFixed(3)}</td>
 					<td><button onClick={()=>deleteSong(i)} type="button" className="btn-close" aria-label="Close"></button></td>
 				</tr>)}
 			</tbody>

@@ -44,19 +44,23 @@ const Tab = () => {
         // デバッグ情報
         let recall = 0
         let score = 0
+        let easiness = 0
 
         debugNotes.forEach(d=>{
             recall += d.recall
             score += d.score
+            easiness += 1.0 / (1.0 + d.cp + d.cc) // 難易度（大きいほど簡単）
         })
         recall /= debugNotes.length
         score /= debugNotes.length    
-        
+        easiness /= debugNotes.length
+
         dispatch({
             type:'setDebugInfo', 
             recall: recall,
             generateTime: t,
-            score: score
+            score: score,
+            easiness: easiness,
         })
 
         // 終了

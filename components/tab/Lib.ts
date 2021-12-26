@@ -137,7 +137,7 @@ export const tunes = [
 // フォームを返す
 export function createFingerForms(): Finger[] {
     // バレーにかけるコスト
-    const barre_cost = 3
+    const barre_cost = 20
 
     // コストを計算する
     const calcCost = (finger : RawFinger[]): Finger[] => {

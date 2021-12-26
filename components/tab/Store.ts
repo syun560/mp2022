@@ -30,6 +30,7 @@ type State = {
     generateTime: number
     score: number
     recall: number
+    easiness: number
 }
 
 export const initialState: State = {
@@ -54,6 +55,7 @@ export const initialState: State = {
     generateTime: 0,
     score: 0,
     recall: 0,
+    easiness: 0
 }
 
 export type Action = 
@@ -78,7 +80,7 @@ export type Action =
     {type: 'setNoteData'; noteData: NoteDatum[]}|
     {type: 'setNoteDataArray'; noteDataArray: number[][]}|
     {type: 'setTabData'; tabData: number[][]}|
-    {type: 'setDebugInfo'; recall: number; generateTime: number; score: number}
+    {type: 'setDebugInfo'; recall: number; generateTime: number; score: number; easiness: number}
 
 // stateとactionを受け取り、actionのtypeによってstateの更新方法を変える
 export const reducer = (state: State, action: Action): State => {
@@ -128,7 +130,12 @@ export const reducer = (state: State, action: Action): State => {
     case 'setNoteData' : return { ...state, noteData: action.noteData }
     case 'setNoteDataArray' : return { ...state, noteDataArray: action.noteDataArray }
     case 'setTabData' : return { ...state, tabData: action.tabData }
-    case 'setDebugInfo': return { ...state, score: action.score, recall: action.recall, generateTime: action.generateTime}
+    case 'setDebugInfo': return { ...state, 
+        score: action.score,
+        recall: action.recall,
+        easiness: action.easiness,
+        generateTime: action.generateTime
+    }
 
 
     default:

@@ -7,7 +7,6 @@ import { useRouter } from 'next/router'
 import usePersist from '../components/Persist'
 import Tab from '../components/tab/Tab'
 import MidiIn from '../components/tab/MidiIn'
-import EventList from '../components/tab/EventList'
 import TrackSelector from '../components/tab/TrackSelector'
 import Param from '../components/tab/Param'
 import Tuning from '../components/tab/Tuning'
@@ -50,10 +49,12 @@ const Home: NextPage = () => {
 			genre: 'none',
 			capo: state.capo,
 			tuning: state.tuning,
+			w: state.w,
 			date: new Date().toLocaleDateString('ja-JP', {timeZone: 'Asia/Tokyo'}),
 
 			generateTime: state.generateTime,
 			score: state.score,
+			easiness: state.easiness,
 			recall: state.recall,
 
 			noteData: state.noteData,
@@ -94,6 +95,7 @@ const Home: NextPage = () => {
 					<p>
                         Recall: {state.recall.toFixed(3)}<br/>
                         Score: {state.score.toFixed(3)}<br/>
+						Easiness: {state.easiness.toFixed(3)}<br/>
                         Time: { state.generateTime.toFixed(3) }
                     </p>
 					<p>
