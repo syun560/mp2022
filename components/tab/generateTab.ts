@@ -52,7 +52,7 @@ export const generateTab = (
         })
         
         // 最短経路を計算し、タブデータを求める
-        const {score, tabData} = solveShortestPath(formNotes, noteDataArray, w, fingers, mCosts)
+        const {score, tabData, debugNotes} = solveShortestPath(formNotes, noteDataArray, w, fingers, mCosts)
 
         // タブ譜を確定する
         if (score > maxScore) {
@@ -64,8 +64,7 @@ export const generateTab = (
                 capo: c,
                 tuning: anno_tune,
                 tabData: tabData,
-                // debugNotes: tmpDebugNotes,
-                debugNotes: []
+                debugNotes,
             }
         }
     })

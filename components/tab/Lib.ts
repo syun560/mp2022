@@ -136,6 +136,8 @@ export const tunes = [
 
 // フォームを返す
 export function createFingerForms(): Finger[] {
+    // バレーにかけるコスト
+    const barre_cost = 3
 
     // コストを計算する
     const calcCost = (finger : RawFinger[]): Finger[] => {
@@ -152,7 +154,7 @@ export function createFingerForms(): Finger[] {
             if (!Number.isFinite(finger_width)) finger_width = 0
 
             // コスト = 指の数 + 指を開く距離 + バレーの有無
-            const cost = finger_num + finger_width + f.barre
+            const cost = finger_num + finger_width + f.barre * barre_cost
             return {
                 ...f,
                 cost

@@ -9,42 +9,46 @@ export const solveShortestPath = (
 ) => {
 
     const ndlength = noteDataArray.length
+    // console.log(ndlength)
 
     if (ndlength < 1) {
         return {
             score: 0,
-            tabData: []
+            tabData: [],
+            debugNotes: []
         }
     }
 
-    // スコア（グラフ）表示用変数
-    // const tmpDebugNotes: DebugNote[] = []
-
-    // 頂点のポイントを保存しておく(1次元)
-    let prevVertexPoint: number[] = new Array(fingers.length).fill(0)
-    let nowVertexPoint: number[] = new Array(fingers.length).fill(0)
-    // 経路のインデックスを記憶しておくポインタ(2次元)
-    const backVertex: number[][] = new Array(ndlength)
-    for (let y = 0; y < fingers.length; y++) {
-        backVertex[y] = new Array(fingers.length).fill(0)
-    }
-    // 押さえる指の形(3次元) [ノート][フォーム][指(6)]
-    const tmp_fingers: number[][][] = Array.from(new Array(ndlength), () => {
-        return Array.from(new Array(fingers.length), () => new Array(6).fill(0))
-    })
-
-    // 入力音高列をイテレーションする(100itr)
-    noteDataArray.forEach( (nd:number[], noteIndex: number) => {            
-        let form_number: number = -1
-        let tmpDebugNote: DebugNote = {
+    // スコア（グラフ）表示用変数(2次元)
+    let tmpDebugNotes: DebugNote[][] = new Array(1000)
+    for (let y = 0; y < 1000; y++) {
+        tmpDebugNotes[y] = new Array(1000).fill({
             correctForm: 0,
             score: 1.0,
             recall: 1.0,
             cp: 0,
             cc: 0,
             cost: 1.0,
-        }
+        })
+    }
 
+    // 頂点のポイントを保存しておく(1次元)
+    let prevVertexPoint: number[] = new Array(fingers.length).fill(0)
+    let nowVertexPoint: number[] = new Array(fingers.length).fill(0)
+    // 経路のインデックスを記憶しておくポインタ(2次元)
+    // const backVertex: number[][] = new Array(ndlength)
+    // for (let y = 0; y < fingers.length; y++) {
+    //     backVertex[y] = new Array(fingers.length).fill(0)
+    // }
+    const backVertex = Array.from(new Array(1000), () => new Array(1000).fill(0));
+
+    // 押さえる指の形(3次元) [ノート][フォーム][指(6)]
+    const tmp_fingers: number[][][] = Array.from(new Array(1000), () => {
+        return Array.from(new Array(1000), () => new Array(6).fill(0))
+    })
+
+    // 入力音高列をイテレーションする(100itr)
+    noteDataArray.forEach( (nd:number[], noteIndex: number) => {            
         // 現在の音後列の頂点について調べる
         nowVertexPoint = new Array(fingers.length).fill(0)
 
@@ -88,25 +92,19 @@ export const solveShortestPath = (
                     // スコアが高かったら更新
                     if (nowVertexPoint[formIndex] < score) {
                         nowVertexPoint[formIndex] = score // スコアを更新
+                        // console.log(noteIndex, formIndex)
                         backVertex[noteIndex][formIndex] = prev_index // どこから来たか記録しておく
                         tmp_fingers[noteIndex][formIndex] = tmp_finger // 指の形を記憶しておく
+                        tmpDebugNotes[noteIndex][formIndex] = { // デバッグ情報を記録
+                            score: point,
+                            correctForm: formIndex,
+                            recall,
+                            cp,
+                            cc,
+                            cost: easiness
+                        }
                     }
                 })
-
-                // ポイントが高いものを選択する（配列にまとめてからMath関数を使えばいいかも）
-                // if (point > point_max) {
-                //     point_max = point
-                //     tmpDebugNote = {
-                //         score: point,
-                //         correctForm: formIndex,
-                //         recall,
-                //         cp,
-                //         cc,
-                //         cost: easiness
-                //     }
-                //     finger = tmp_finger // 実際に押さえる指の配列
-                //     form_number = formIndex
-                // }
             })
             // 以前の段階のスコアを記録しておく
             prevVertexPoint = nowVertexPoint
@@ -138,26 +136,29 @@ export const solveShortestPath = (
     // 最後のフィンガリングをプッシュする
     const tmpFingering:number[][] = []
     const form_number:number[] = []
+    const debugNotes: DebugNote[] = []
     tmpFingering.push(tmp_fingers[ndlength-1][maxScoreIndex])
     form_number.push(maxScoreIndex)
+    debugNotes.push(tmpDebugNotes[ndlength-1][maxScoreIndex])
 
     // バックトレースを行う
     let next = backVertex[ndlength - 1][maxScoreIndex]
     for (let x = ndlength - 2; x >= 0; x--) {
         tmpFingering.push(tmp_fingers[x][next])
         form_number.push(next)
+        debugNotes.push(tmpDebugNotes[x][next])
         next = backVertex[x][next]
     }
 
     // 逆にする
     tmpFingering.reverse()
     form_number.reverse()
+    debugNotes.reverse()
 
     // 用意したフォームで再現可能な音高であれば、tabDataに追加
     // tmpFingeringというのは1か0で表されている（例: [0, 0, 0, 1, 1, 0]）
     // tabDataはform_number（抑えるフォームのインデックス）と合わせてはじめて完成する
     // tabDataは鳴らさない音は-1にする。
-    // -の問題
     const tabData = tmpFingering.map((finger, nIndex) => {
         return finger.map((f, index) => {
             // if (f !== 0 && form_number !== -1) return fingers[form_number].form[index]
@@ -168,6 +169,7 @@ export const solveShortestPath = (
 
     return {
         score: maxScore,
-        tabData: tabData
+        tabData: tabData,
+        debugNotes: debugNotes
     }
 }

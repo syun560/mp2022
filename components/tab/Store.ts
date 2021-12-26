@@ -35,7 +35,7 @@ type State = {
 export const initialState: State = {
     appState: 'unloaded',
     
-    w: 0.8,
+    w: 0.9,
     capo: 0,
     tuning: [0,0,0,0,0,0],
     

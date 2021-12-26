@@ -63,13 +63,7 @@ const Tab = () => {
         dispatch({type: 'setGenerateFlag', generateFlag: false})
     }           
 
-    return <div>
-        <Graph 
-            tuning={tune}
-            fingers={fingers}
-            debugNotes={dn}
-        />
-    </div>
+    return <Graph tuning={tune} fingers={fingers} debugNotes={dn} />
 }
 
 export default memo(Tab)
