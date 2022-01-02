@@ -71,7 +71,7 @@ function manhattan(f: Finger, g: Finger, horizontal_move: number): number{
         }
         // どちらかの場合は離弦、押弦コスト+1
         else if (f.finger.includes(y) || g.finger.includes(y)) {
-            res += 1
+            res += 0.1
         }
     })
     return res
@@ -137,7 +137,7 @@ export const tunes = [
 // フォームを返す
 export function createFingerForms(): Finger[] {
     // バレーにかけるコスト
-    const barre_cost = 20
+    const barre_cost = 5
 
     // コストを計算する
     const calcCost = (finger : RawFinger[]): Finger[] => {

@@ -83,6 +83,7 @@ export const solveShortestPath = (
                 prevVertexPoint.forEach((prev, prev_index)=>{
                     let cc = 0
                     if (mCosts.length > 0) cc = mCosts[prev_index][formIndex] // フォーム変更コスト
+                    // if (nd.length === 0) cc = 0 // 音がない時はフォーム変更コストは考えないことにする
                     const easiness = 1.0 / (1.0 + cp + cc) // 難易度（大きいほど簡単）
 
                     // ポイント（高いほどより適している）

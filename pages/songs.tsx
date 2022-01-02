@@ -44,7 +44,7 @@ const Songs: NextPage = () => {
 					<td>{s.capo}</td>
 					<td>{s.tuning.join()}</td>
 					<td>{s.w?.toFixed(3)}</td>
-					<td>{s.generateTime.toFixed(3)}</td>
+					<td>{(s.generateTime/1000).toFixed(3)}</td>
 					<td>{s.noteData.length}</td>
 					<td>{s.recall.toFixed(3)}</td>
 					<td>{s.easiness?.toFixed(3)}</td>

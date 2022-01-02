@@ -46,7 +46,7 @@ export const generateTab = (
             formNotes.push(
                 finger.form.map((n, index) => {
                     if (n === -1) return -1 // -1のときは使えない
-                    return n + regularTuning[index] + capo + anno_tune[index]
+                    return n + regularTuning[index] + c + anno_tune[index]
                 })
             )
         })
@@ -54,11 +54,10 @@ export const generateTab = (
         // 最短経路を計算し、タブデータを求める
         const {score, tabData, debugNotes} = solveShortestPath(formNotes, noteDataArray, w, fingers, mCosts)
 
+        console.log('capo:' + c + ' tuning:[' + anno_tune + '] score: ' + score.toFixed(1))
+
         // タブ譜を確定する
         if (score > maxScore) {
-            console.log('capo:' + c)
-            console.log('tuning:' + anno_tune)
-            console.log('score' + score)
             maxScore = score
             res = {
                 capo: c,

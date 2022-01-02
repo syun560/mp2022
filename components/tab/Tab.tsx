@@ -47,6 +47,7 @@ const Tab = () => {
         let easiness = 0
 
         debugNotes.forEach(d=>{
+            //if (d.score === 1) return // 暫定的にスコア0のところは数えない？
             recall += d.recall
             score += d.score
             easiness += 1.0 / (1.0 + d.cp + d.cc) // 難易度（大きいほど簡単）
