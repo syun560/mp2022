@@ -51,8 +51,8 @@ export const seqReducer = (state: SeqState, action: SeqAction): SeqState => {
     case 'NOTE_ON':
         {
             const ch = action.channel
-            state.output.send([0x90 + ch, action.note, 100])
-            state.output.send([0x80 + ch, action.note, 100], window.performance.now() + 1000) // 1秒後にノートオフ
+            state.output.send([0x90 + ch, action.note, 40])
+            state.output.send([0x80 + ch, action.note, 40], window.performance.now() + 1000) // 1秒後にノートオフ
             break
         }
     case 'ALL_NOTE_OFF':

@@ -6,7 +6,7 @@ interface Props {
     tuning: number[]
 }
 
-const ASCIITab = memo((props: Props) => {
+const ASCIITab = (props: Props) => {
     console.log('generated ASCIItab')
 
     // 2次元配列を宣言
@@ -66,6 +66,6 @@ const ASCIITab = memo((props: Props) => {
             {tabStrLine2}
         </pre>
     </div>
-})
+}
 
-export default ASCIITab
+export default memo(ASCIITab)

@@ -34,7 +34,8 @@ export function Conductor (props: Props){
         if (seqState.nowTick % 20 === 0 && seqState.isPlaying) scrollToCenter(seqState.nowTick + 10)
     }, [seqState.nowTick, seqState.isPlaying])
     
-    const a = state.timeSignatures[0].timeSignature[0] * 2
+    let a = state.timeSignatures[0].timeSignature[0] * 2
+    if (a === 6) a *= 2
     const tdStyle = (tick: number) => {
         let res = {
             borderBottom: '1px solid black',

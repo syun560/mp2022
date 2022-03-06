@@ -51,7 +51,8 @@ export default function Tablature(props: Props) {
         
             borderLeft: ''
         }
-        const a = state.timeSignatures[0].timeSignature[0] * 2
+        let a = state.timeSignatures[0].timeSignature[0] * 2
+        if (a === 6) a *= 2
         if (tick % a === 0) res = { ...res, borderLeft: '1px solid black' }
         return res
     }

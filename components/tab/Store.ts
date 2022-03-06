@@ -105,6 +105,7 @@ export const reducer = (state: State, action: Action): State => {
             ...state,
             capo: 0,
             tuning: [0,0,0,0,0,0],
+            w: 0.9,
             capoFixedFlag: true,
             tuneFixedFlag: true
         }

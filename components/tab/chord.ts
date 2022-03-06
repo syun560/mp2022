@@ -205,6 +205,12 @@ export const chord: RawFinger[] = [
         finger: [0, 0, 0, 1, 3, 1],
         barre: 0,
     },
+    // {
+    //     name: 'D',
+    //     form: [-1, -1, 0, 2, 3, 2],
+    //     finger: [0, 0, 0, 1, 3, 2],
+    //     barre: 0,
+    // },
     {
         name: 'D/C',
         form: [-1, 3, 0, 2, 3, 2],
@@ -895,6 +901,12 @@ export const chord: RawFinger[] = [
         finger: [0, 0, 1, 1, 1, 0],
         barre: 0.5,
     },
+    // {
+    //     name: 'A',
+    //     form: [-1, 0, 2, 2, 2, 0],
+    //     finger: [0, 0, 1, 2, 3, 0],
+    //     barre: 0,
+    // },
     {
         name: 'A/E',
         form: [0, 0, 2, 2, 2, 0],
