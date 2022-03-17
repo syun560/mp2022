@@ -63,7 +63,6 @@ const MidiIn = () => {
 
     // 状態が読み込み待機中のみ
     if (state.appState==='onload') {
-        console.log('うんち')
         load()
     }
 
