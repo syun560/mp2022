@@ -105,7 +105,7 @@ const Home: NextPage = () => {
 					</p>
 				</div>
 				<div className="col-lg-9">
-					<Instrument />
+					{/* <Instrument /> */}
 					<Sequencer />
 				    <Tab />
 				</div>
