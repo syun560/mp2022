@@ -9,7 +9,6 @@ import Tab from '../components/tab/Tab'
 import MidiIn from '../components/tab/MidiIn'
 import TrackSelector from '../components/tab/TrackSelector'
 import Param from '../components/tab/Param'
-import Tuning from '../components/tab/Tuning'
 import Sequencer from '../components/tab/Sequencer'
 import Instrument from '../components/tab/Graph/Instrument'
 
@@ -47,15 +46,7 @@ const Home: NextPage = () => {
 		const song:Song = {
 			title: state.title,
 			genre: 'none',
-			capo: state.capo,
-			tuning: state.tuning,
-			w: state.w,
 			date: new Date().toLocaleDateString('ja-JP', {timeZone: 'Asia/Tokyo'}),
-
-			generateTime: state.generateTime,
-			score: state.score,
-			easiness: state.easiness,
-			recall: state.recall,
 
 			noteData: state.noteData,
             noteDataArray: state.noteDataArray,
@@ -80,9 +71,7 @@ const Home: NextPage = () => {
 			<div className='row mt-2'>
 				<div className="col-lg-3">
 					<TrackSelector />
-					{/* <EventList noteData={state.noteData} channel={state.channel} /> */}
 					<Param />
-					<Tuning />
 					<div className='text-center'>
 						<button className='btn btn-secondary mx-2' onClick={()=>dispatch({type: 'paramReset'})}>Reset</button>
 						{state.generateFlag
@@ -93,13 +82,6 @@ const Home: NextPage = () => {
 					</div>
 					<hr />
 					<p>
-                        Recall: {state.recall.toFixed(3)}<br/>
-                        Score: {state.score.toFixed(3)}<br/>
-						Easiness: {state.easiness.toFixed(3)}<br/>
-                        Time: { state.generateTime.toFixed(3) }
-                    </p>
-					<p>
-						{/* BPM: {midi?.header.tempos[0].bpm}<br /> */}
 						Beat: {state.timeSignatures[0]?.timeSignature[0]}/{state.timeSignatures[0]?.timeSignature[1]}<br />
 						Beat: {state.timeSignatures[1]?.timeSignature[0]}/{state.timeSignatures[1]?.timeSignature[1]}<br />
 					</p>
@@ -107,7 +89,7 @@ const Home: NextPage = () => {
 				<div className="col-lg-9">
 					<Instrument />
 					<Sequencer />
-				    <Tab />
+					<Tab />
 				</div>
 			</div>
 			}

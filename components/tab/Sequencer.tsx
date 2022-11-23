@@ -5,7 +5,6 @@ export default function Sequencer () {
     const state = useContext(StateContext)
     const dispatch = useContext(DispatchContext)
     const {seqState, seqDispatch} = useContext(SequencerContext)
-    const [guitarFlag, setGuitarFlag] = useState(true)
 
     const timer = useRef<any>()
     const delayTime = 60 * 1000 / (seqState.bpm * 2)
@@ -34,22 +33,11 @@ export default function Sequencer () {
     const tune = regularTuning.map((value, i)=> state.capo + value + state.tuning[i])
 
     const play = () => {
-        const nowTick = nowTickRef.current
-        // ギター音を鳴らす
-        if (guitarFlag){
-            if (nowTick < state.tabData.length) {
-                state.tabData[nowTick].forEach ((t,i)=>{
-                    const n = t === -1 ? -1 : (t + tune[i])
-                    if (n !== -1) seqDispatch({type: 'NOTE_ON', note: n, channel: 1})
-                })
-            }
-        }
+        const nowTick = nowTickRef.current   
         // noteDataArrayを参照してピアノ音を鳴らす
-        else {
-            state.noteDataArray[nowTick].forEach(n=>{
-                seqDispatch({type: 'NOTE_ON', note: n, channel: 0})
-            })
-        }
+        state.noteDataArray[nowTick].forEach(n=>{
+            seqDispatch({type: 'NOTE_ON', note: n, channel: 0})
+        })
     }
     const stop = () => {
         seqDispatch( {type: 'setIsPlaying', isPlaying: false })
@@ -77,7 +65,5 @@ export default function Sequencer () {
         <button className="btn btn-primary me-1" onClick={playToggle}>
             {seqState.isPlaying ? 'II' : '▶' }
         </button>
-        Guitar: 
-        <input className='form-check-input' type='checkbox' checked={guitarFlag} onClick={(e:any)=>setGuitarFlag(e.target.checked)} />
     </span>
 }
