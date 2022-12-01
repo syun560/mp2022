@@ -28,10 +28,6 @@ export default function Sequencer () {
         }
     }
 
-    // タブノートを生成
-    const regularTuning = [40, 45, 50, 55, 59, 64]
-    const tune = regularTuning.map((value, i)=> state.capo + value + state.tuning[i])
-
     const play = () => {
         const nowTick = nowTickRef.current   
         // noteDataArrayを参照してピアノ音を鳴らす

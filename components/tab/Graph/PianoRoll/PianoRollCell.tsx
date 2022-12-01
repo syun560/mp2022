@@ -3,7 +3,6 @@ import { TimeSignature } from '../../type'
 
 interface Props {
     selected: boolean
-    tabSelected: boolean
     note: number
     tick: number
     timeSignatures: TimeSignature[]
@@ -31,7 +30,6 @@ export default function PianoRollCell(props: Props) {
 
     // ノートに色を付ける
     if (props.selected) td = { ...td, background: 'orange' }
-    if (props.tabSelected) td = {...td, background: 'cyan' }
     if (props.note % 12 === 0) td = {...td, borderBottom: '1px black solid'}
 
     // ネガティブマージン（はみ出すマージン）のテスト

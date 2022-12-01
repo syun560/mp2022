@@ -11,6 +11,7 @@ import TrackSelector from '../components/tab/TrackSelector'
 import Param from '../components/tab/Param'
 import Sequencer from '../components/tab/Sequencer'
 import Instrument from '../components/tab/Graph/Instrument'
+import { SMFWrite } from '../components/tab/SMFWrite'
 
 import { Song, defaultSaveData } from '../components/tab/type'
 import { reducer, initialState, Action } from '../components/tab/Store'
@@ -50,12 +51,16 @@ const Home: NextPage = () => {
 
 			noteData: state.noteData,
             noteDataArray: state.noteDataArray,
-			tabData: state.tabData,
 
 			timeSignatures: state.timeSignatures
 	    }
 		setSaveData({songs: [...saveData.songs.filter(s=>s.title!==state.title), song]})
         console.log('save!!!!!!!!!!')
+	}
+
+	// 生成
+	const gen = () => {
+		SMFWrite(state.noteData)
 	}
 
 	return <Layout title='Home' navNum={0}>
@@ -74,10 +79,7 @@ const Home: NextPage = () => {
 					<Param />
 					<div className='text-center'>
 						<button className='btn btn-secondary mx-2' onClick={()=>dispatch({type: 'paramReset'})}>Reset</button>
-						{state.generateFlag
-	            		?<button className="btn btn-success" disabled>Generating...</button>
-	            		:<button onClick={()=>dispatch({type: 'setGenerateFlag', generateFlag:true})} className="btn btn-success">Generate</button>
-						}
+	            		<button onClick={gen} className="btn btn-success">Generate</button>
 						<button onClick={save} className="btn btn-secondary ms-2">Save</button>
 					</div>
 					<hr />

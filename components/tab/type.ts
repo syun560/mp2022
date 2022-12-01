@@ -13,19 +13,6 @@ export interface RawFinger {
     barre: number,
 }
 
-export interface Finger extends RawFinger{
-    cost: number
-}
-
-export interface DebugNote {
-    correctForm: number
-    score: number
-    recall: number
-    cost: number
-    cp: number
-    cc: number
-}
-
 export interface TimeSignature {
     measures?: number | undefined
     ticks: number
@@ -40,7 +27,6 @@ export interface Song {
 
     noteData: NoteDatum[]
     noteDataArray: number[][]
-    tabData: number[][]
 
     timeSignatures: TimeSignature[]
 }
@@ -58,7 +44,6 @@ export const defaultSaveData:SaveData = {
 			
             noteDataArray: [],
 			noteData: [],
-			tabData: [],
             timeSignatures: [{
                 measures: 0,
                 ticks: 0,

@@ -8,7 +8,6 @@ import { StateContext, DispatchContext } from '../../../pages'
 
 const Graph = () => {
     const state = useContext(StateContext)
-    const dispatch = useContext(DispatchContext)
 
     const div = {
         overflow: 'auto'

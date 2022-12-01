@@ -8,9 +8,6 @@ const Tab = () => {
     const state = useContext(StateContext)
     const dispatch = useContext(DispatchContext)
 
-    // デバッグ表示用変数
-    const [dn, setDn] = useState<DebugNote[]>([])
-
     useEffect(() => { dispatch({ type:'setNoteDataArray', noteDataArray: convertData(state.noteData, 240, state.channel) })
     },[state.channel])
 
@@ -19,20 +16,6 @@ const Tab = () => {
         
         const endTime = performance.now()
         const t = endTime - startTime
-
-
-        // デバッグ情報
-        let recall = 0
-        let score = 0
-        let easiness = 0
-
-        dispatch({
-            type:'setDebugInfo', 
-            recall: recall,
-            generateTime: t,
-            score: score,
-            easiness: easiness,
-        })
 
         // 終了
         dispatch({type: 'setGenerateFlag', generateFlag: false})

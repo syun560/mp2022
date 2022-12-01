@@ -22,14 +22,8 @@ const Songs: NextPage = () => {
 					<th>Title</th>
 					{/* <th>Genre</th> */}
 					{/* <th>Date</th> */}
-					<th>Capo</th>
-					<th>Tuning</th>
-					<th>w</th>
 					<th>generateTime(ms)</th>
 					<th>NotesNum</th>
-					<th>Recall</th>
-					<th>Easiness</th>
-					<th>Score</th>
 					<th></th>
 				</tr>
 			</thead>
@@ -41,14 +35,6 @@ const Songs: NextPage = () => {
           			}}>{s.title}</Link></td>
 					{/* <td>{s.genre}</td> */}
 					{/* <td>{s.date}</td> */}
-					<td>{s.capo}</td>
-					<td>{s.tuning.join()}</td>
-					<td>{s.w?.toFixed(3)}</td>
-					<td>{(s.generateTime/1000).toFixed(3)}</td>
-					<td>{s.noteData.length}</td>
-					<td>{s.recall.toFixed(3)}</td>
-					<td>{s.easiness?.toFixed(3)}</td>
-					<td>{s.score.toFixed(3)}</td>
 					<td><button onClick={()=>deleteSong(i)} type="button" className="btn-close" aria-label="Close"></button></td>
 				</tr>)}
 			</tbody>

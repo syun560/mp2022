@@ -59,18 +59,6 @@ const PianoRoll = () => {
         return nd.note === note && nd.time === tick * reso
     }
 
-    // タブデータにあるかどうかの判定
-    const regularTuning = [40, 45, 50, 55, 59, 64]
-    const tune = regularTuning.map((value, i)=> state.capo + value + state.tuning[i])
-    const isTabData = (note: number, tick: number):boolean => {
-        if (tick < state.tabData.length) {
-            return state.tabData[tick].map((t, i)=>{
-                if (t === -1) return -100
-                return t+tune[i]
-            }).includes(note) 
-        }
-        else return false
-    }
 
     // アボイドノートで色を変える
     const st = (note: number) => {
@@ -78,9 +66,6 @@ const PianoRoll = () => {
         const c_major = [0,2,4,5,7,9,11]
         if (!c_major.includes(note % 12)) {
             res = { ...res, background: '#e8faff' }
-        }
-        if (tune.includes(note)) {
-            res = { ...res, background: stringColor[tune.indexOf(note)]}
         }
         return res
     } 
@@ -104,7 +89,6 @@ const PianoRoll = () => {
                         timeSignatures={state.timeSignatures}
                         key={tick} note={note} tick={tick}
                         selected={noteData.some((nd)=>cleanData(nd, note, tick))}
-                        tabSelected={isTabData(note, tick)}
                     />
                 ))}
             </tr>

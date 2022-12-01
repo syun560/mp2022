@@ -20,10 +20,6 @@ const MidiIn = () => {
         }
     }
 
-    // useEffect(()=>{
-    //     load()
-    // }, [state.appState])
-
     const load = () => {
         async function loadMIDI(){
             console.log('load!')
