@@ -26,15 +26,6 @@ const PianoRoll = () => {
         hegiht: '8px',
         width: '20px',
     }
-    // 弦ごとに色を設定
-    const stringColor = [
-        '#f7bfff',
-        '#c1bfff',
-        '#a2f3f5',
-        '#bfffd0',
-        '#ecffbf',
-        '#ffd5bf',
-    ]
 
     // 現在のチャンネルのnoteDataを取得
     const noteData = state.noteData.filter(f=>f.channel===state.channel)

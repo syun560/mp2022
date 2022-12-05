@@ -1,9 +1,7 @@
-import React, { memo, useContext, useState } from 'react'
-import { Finger } from '../type'
+import React, { memo, useContext } from 'react'
 import PianoRoll from './PianoRoll/PianoRoll'
-import { DebugNote } from '../type'
 import { Conductor } from './Conductor'
-import { StateContext, DispatchContext } from '../../../pages'
+import { StateContext } from '../../../pages'
 
 
 const Graph = () => {
@@ -19,13 +17,12 @@ const Graph = () => {
 
     return <div style={div} className='bar'>
         <table style={table} className='table table-borderless'>
-        <tbody>
+            <tbody>
+                <Conductor tickLength={state.noteDataArray.length} />
+	    	    <PianoRoll />
 
-		    <PianoRoll />
-            <Conductor tickLength={state.noteDataArray.length} />
-
-        </tbody>
-    </table>
+            </tbody>
+        </table>
     </div>
 }
 

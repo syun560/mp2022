@@ -16,11 +16,19 @@ export const SMFWrite = (song: NoteDatum[]) => {
 
         // noteEvents
         ne.map(noteEvent => {
+
+
+            // durationを変換
+            let dur = "T" + Math.round(noteEvent.duration / 480 * 128)
+            let sta = Math.round(noteEvent.time / 480 * 128)
+
+
             let note = new MidiWriter.NoteEvent({
                 pitch: noteNumberToNoteName(noteEvent.note),
-                duration: '8',
+                duration: dur,
                 channel: ch + 1,
-                velocity: 100
+                velocity: 100,
+                startTick: sta
             })
             console.log(note)
             newTrack.addEvent(note)

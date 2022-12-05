@@ -15,10 +15,6 @@ export default function Header(props:Props) {
             name: 'Home'
         },
         {
-            url: '/fingering',
-            name: 'Fingering'
-        },
-        {
             url: '/songs',
             name: 'Songs'
         },

@@ -11,6 +11,7 @@ import TrackSelector from '../components/tab/TrackSelector'
 import Param from '../components/tab/Param'
 import Sequencer from '../components/tab/Sequencer'
 import Instrument from '../components/tab/Graph/Instrument'
+import EventList from '../components/tab/EventList'
 import { SMFWrite } from '../components/tab/SMFWrite'
 
 import { Song, defaultSaveData } from '../components/tab/type'
@@ -76,6 +77,7 @@ const Home: NextPage = () => {
 			<div className='row mt-2'>
 				<div className="col-lg-3">
 					<TrackSelector />
+					<EventList noteData={state.noteData} channel={state.channel}/>
 					<Param />
 					<div className='text-center'>
 						<button className='btn btn-secondary mx-2' onClick={()=>dispatch({type: 'paramReset'})}>Reset</button>

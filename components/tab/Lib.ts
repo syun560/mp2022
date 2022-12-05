@@ -1,4 +1,4 @@
-import { Finger, RawFinger, NoteDatum } from "./type"
+import { NoteDatum } from "./type"
 
 // 入力MIDIデータを2次元配列の形に変換する
 export const convertData = (nd: NoteDatum[], reso:number, channel: number):number[][] => {

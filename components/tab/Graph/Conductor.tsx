@@ -36,8 +36,11 @@ export function Conductor (props: Props){
     
     let a = state.timeSignatures[0].timeSignature[0] * 2
     if (a === 6) a *= 2
+    
     const tdStyle = (tick: number) => {
         let res = {
+            padding: 0,
+            fontSize: '1em',
             borderBottom: '1px solid black',
             borderLeft: ''
         }

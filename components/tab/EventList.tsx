@@ -27,12 +27,7 @@ const EventList = (props: Props) => {
         zIndex: 1
     }
 
-    // const debug_info = <p>
-    //     Notes: {noteData.length} min: {noteNumberToNoteName([...noteData].sort((a,b)=>a.note < b.note ? -1 : 1)[0]?.note)}
-    // </p>
-
     return <div style={box} className='bar'>
-        {/* {debug_info} */}
         <table className="table table-sm">
             <thead><tr>
                 {/* <th>ch</th> */}

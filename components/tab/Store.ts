@@ -9,6 +9,7 @@ type State = {
 
     // パラメータ
     channel: number
+    tempo: number
 
     // 曲データ
     title: string
@@ -22,6 +23,7 @@ export const initialState: State = {
     appState: 'unloaded',
 
     channel: 0,
+    tempo: 120,
     
     title: 'no name',
     timeSignatures: [],
@@ -37,7 +39,8 @@ export type Action =
 
     {type: 'start'      ;}|
     {type: 'paramReset' ;}|
-    
+
+    {type: 'setTempo' ; tempo: number}|
     {type: 'setChannel' ; channel: number}|
     {type: 'setTitle'   ; title: string}|
     {type: 'setAppState'; appState: AppState}|
@@ -69,6 +72,7 @@ export const reducer = (state: State, action: Action): State => {
     case 'setChannel':  return { ...state, channel: action.channel}
     case 'setTitle':    return { ...state, title: action.title }
     case 'setTimeSignatures': return { ...state, timeSignatures: action.timeSignatures }
+    case 'setTempo': return { ...state, tempo: action.tempo }
     case 'setNoteData': return { ...state, noteData: action.noteData }
     case 'setNoteData' : return { ...state, noteData: action.noteData }
     case 'setNoteDataArray' : return { ...state, noteDataArray: action.noteDataArray }

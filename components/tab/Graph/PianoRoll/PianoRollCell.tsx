@@ -40,13 +40,13 @@ export default function PianoRollCell(props: Props) {
 
     // tick4つごとに区切り線を追加
     // 拍子はa/bで表される
-    let a = props.timeSignatures[0].timeSignature[0]
-    let b = props.timeSignatures[0].timeSignature[1]
+    //let a = props.timeSignatures[0].timeSignature[0]
+    //let b = props.timeSignatures[0].timeSignature[1]
 
-    if (a === 3) a *= 2
+    //if (a === 3) a *= 2
 
-    if (props.tick % 2 === 0) td = { ...td, borderLeft: '1px solid #e7e7e7' }
-    if (props.tick % (a * 2) === 0) td = { ...td, borderLeft: '1px solid #111' }
+    if (props.tick % 4 === 0) td = { ...td, borderLeft: '1px solid #e7e7e7' }
+    if (props.tick % 8 === 0) td = { ...td, borderLeft: '1px solid #111' }
 
     return <td style={td}>
         <div style={test}></div>

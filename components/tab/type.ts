@@ -6,13 +6,6 @@ export interface NoteDatum {
     duration: number // 長さ（2で全音符, 0.5: 4分音符, 0.25: 8分音符）
 }
 
-export interface RawFinger {
-    name: string,
-    form: number[],
-    finger: number[], 
-    barre: number,
-}
-
 export interface TimeSignature {
     measures?: number | undefined
     ticks: number
@@ -21,9 +14,7 @@ export interface TimeSignature {
 
 export interface Song {
 	date: string
-
     title: string
-	genre: string
 
     noteData: NoteDatum[]
     noteDataArray: number[][]
@@ -40,7 +31,6 @@ export const defaultSaveData:SaveData = {
 		{
 			date: '2021/10/29',
 			title: '主よ人の望みよ、喜びよ',
-			genre: 'classic',
 			
             noteDataArray: [],
 			noteData: [],
