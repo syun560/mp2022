@@ -10,7 +10,7 @@ import MidiIn from '../components/tab/MidiIn'
 import TrackSelector from '../components/tab/TrackSelector'
 import Param from '../components/tab/Param'
 import Sequencer from '../components/tab/Sequencer'
-import Instrument from '../components/tab/Graph/Instrument'
+import Instrument from '../components/tab/Instrument'
 import EventList from '../components/tab/EventList'
 import { SMFWrite } from '../components/tab/SMFWrite'
 
@@ -47,7 +47,6 @@ const Home: NextPage = () => {
 	const save = () => {
 		const song:Song = {
 			title: state.title,
-			genre: 'none',
 			date: new Date().toLocaleDateString('ja-JP', {timeZone: 'Asia/Tokyo'}),
 
 			noteData: state.noteData,
@@ -69,12 +68,19 @@ const Home: NextPage = () => {
 		<StateContext.Provider value={state}>
 		<DispatchContext.Provider value={dispatch}>
 		<SequencerContext.Provider value={{seqState, seqDispatch}}>
-			<MidiIn />
 			
+			<div className='row'>
+				<div className="col-lg-3">
+					<MidiIn />
+				</div>
+				<div className="col-lg-9">
+					<Instrument />
+				</div>
+			</div>
 			{state.appState !== 'complete'?
 			<h3>Loading...</h3>
 			: 
-			<div className='row mt-2'>
+			<div className='row'>
 				<div className="col-lg-3">
 					<TrackSelector />
 					<EventList noteData={state.noteData} channel={state.channel}/>
@@ -91,7 +97,6 @@ const Home: NextPage = () => {
 					</p>
 				</div>
 				<div className="col-lg-9">
-					<Instrument />
 					<Sequencer />
 					<Tab />
 				</div>

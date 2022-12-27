@@ -11,8 +11,9 @@ interface Props {
 export default function PianoRollCell(props: Props) {
     // スタイルを追加
     let td = { 
+        minWidth: '50px',
         width: '50px',
-        height: '8px',
+        height: '30px',
         padding: '0px',
         background: '',
         borderBottom: '0px black solid',
@@ -29,14 +30,18 @@ export default function PianoRollCell(props: Props) {
     }
 
     // ノートに色を付ける
-    if (props.selected) td = { ...td, background: 'orange' }
     if (props.note % 12 === 0) td = {...td, borderBottom: '1px black solid'}
 
-    // ネガティブマージン（はみ出すマージン）のテスト
-    const test = {
-        marginRight: '20px',
-        marginTop: '-10px' 
+    // width200%ではみ出せる
+    let cell = {
+        // width: '200%',
+        width: '100%',
+        height: '100%', // これを指定しないと空Divのときにwidthが効かない
+        fontSize: '1px',
+        background: '',
     }
+
+    if (props.selected) cell = { ...cell, background: 'orange' }
 
     // tick4つごとに区切り線を追加
     // 拍子はa/bで表される
@@ -49,6 +54,6 @@ export default function PianoRollCell(props: Props) {
     if (props.tick % 8 === 0) td = { ...td, borderLeft: '1px solid #111' }
 
     return <td style={td}>
-        <div style={test}></div>
+        <div style={cell}></div>
     </td>
 }

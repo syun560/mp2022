@@ -20,10 +20,7 @@ const Songs: NextPage = () => {
 			<thead>
 				<tr>
 					<th>Title</th>
-					{/* <th>Genre</th> */}
-					{/* <th>Date</th> */}
-					<th>generateTime(ms)</th>
-					<th>NotesNum</th>
+					<th>Date</th>
 					<th></th>
 				</tr>
 			</thead>
@@ -33,8 +30,7 @@ const Songs: NextPage = () => {
             			pathname: '/',
             			query: { song_id: i },
           			}}>{s.title}</Link></td>
-					{/* <td>{s.genre}</td> */}
-					{/* <td>{s.date}</td> */}
+					<td>{s.date}</td>
 					<td><button onClick={()=>deleteSong(i)} type="button" className="btn-close" aria-label="Close"></button></td>
 				</tr>)}
 			</tbody>

@@ -25,6 +25,8 @@ export function Conductor (props: Props){
                 inline: 'center',
             })
     }
+
+    // クリックした部分へティックを動かす
     const doClick = (tick: number) => {
         seqDispatch({type: 'setNowTick', nowTick: tick})
     }
@@ -34,11 +36,14 @@ export function Conductor (props: Props){
         if (seqState.nowTick % 20 === 0 && seqState.isPlaying) scrollToCenter(seqState.nowTick + 10)
     }, [seqState.nowTick, seqState.isPlaying])
     
-    let a = state.timeSignatures[0].timeSignature[0] * 2
-    if (a === 6) a *= 2
-    
+    // let a = state.timeSignatures[0].timeSignature[0] * 2
+    // if (a === 6) a *= 2
+    let a = 8
+
     const tdStyle = (tick: number) => {
         let res = {
+            width: '300px',
+            height: '8px',
             padding: 0,
             fontSize: '1em',
             borderBottom: '1px solid black',

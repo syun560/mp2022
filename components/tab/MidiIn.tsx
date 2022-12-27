@@ -44,6 +44,12 @@ const MidiIn = () => {
                         time: note.ticks,
                         duration: note.durationTicks
                     })
+                    console.log({
+                        channel: index,
+                        note: note.midi,
+                        time: note.ticks,
+                        duration: note.durationTicks
+                    })
                 })
             })
 

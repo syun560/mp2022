@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect, memo } from 'react'
-import { SequencerContext } from '../../../pages'
+import { SequencerContext } from '../../pages'
 
 const Instrument = () => {
     const [selectedOutPortID, setSelectedOutPortID] = useState('')
@@ -90,7 +90,7 @@ const Instrument = () => {
     return <span className='me-2'>
         {/* <tr><td>Input: </td><td><select>{ in_items }</select></td></tr> */}
           
-        MidiOut: <select onChange={(e)=>setSelectedOutPortID(e.target.value)}
+        <select className="form-select" onChange={(e)=>setSelectedOutPortID(e.target.value)}
         defaultValue="-1">
             { out_items }
         </select>

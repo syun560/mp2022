@@ -24,9 +24,9 @@ export default function Header(props:Props) {
     </li>)
 
     return <header>
-        <nav className="navbar navbar-dark navbar-expand-sm navbar-light bg-dark">
+        <nav className="navbar navbar-dark navbar-expand-sm bg-dark">
             <div className="container-fluid shadow">
-                <Link href='/'><a className="navbar-brand">Guitar Tab Generator</a></Link>
+                <Link href='/'><a className="navbar-brand">Auto Composer</a></Link>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
