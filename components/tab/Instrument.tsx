@@ -80,15 +80,15 @@ const Instrument = () => {
 
     // セレクトタグの内容を作る
     let n = 0
-    // let in_items = inPorts.map((value:any) =>
-    //     <option key={n++} value={value.ID}>{value.name} ({value.ID})</option> 
-    // )
+    let in_items = inPorts.map((value:any) =>
+        <option key={n++} value={value.ID}>{value.name} ({value.ID})</option> 
+    )
     let out_items = outPorts.map((value:any) =>
         <option key={n++} value={value.ID}>{value.name} ({value.ID})</option> 
     )
 
     return <span className='me-2'>
-        {/* <tr><td>Input: </td><td><select>{ in_items }</select></td></tr> */}
+        <tr><td>Input: </td><td><select>{ in_items }</select></td></tr>
           
         <select className="form-select" onChange={(e)=>setSelectedOutPortID(e.target.value)}
         defaultValue="-1">

@@ -1,5 +1,7 @@
-import React from 'react'
-import { TimeSignature } from '../../type'
+import React, { useContext } from 'react'
+
+import { NoteDatum, TimeSignature } from '../../type'
+import { StateContext, DispatchContext } from '../../../../pages'
 
 interface Props {
     selected: boolean
@@ -9,6 +11,8 @@ interface Props {
 }
 
 export default function PianoRollCell(props: Props) {
+    const dispatch = useContext(DispatchContext)
+
     // スタイルを追加
     let td = { 
         minWidth: '50px',
@@ -43,6 +47,21 @@ export default function PianoRollCell(props: Props) {
 
     if (props.selected) cell = { ...cell, background: 'orange' }
 
+    const doClick = () => {
+        //alert("うんち")
+        // 現在の情報を表示する
+        
+        // notedataを登録する。
+        const tmpNote:NoteDatum = {
+            channel: 0,
+            note: 66,
+            time: 240,
+            duration: 2
+        }
+
+        dispatch({type: 'addNoteData', note: tmpNote })
+    }
+
     // tick4つごとに区切り線を追加
     // 拍子はa/bで表される
     //let a = props.timeSignatures[0].timeSignature[0]
@@ -53,7 +72,7 @@ export default function PianoRollCell(props: Props) {
     if (props.tick % 4 === 0) td = { ...td, borderLeft: '1px solid #e7e7e7' }
     if (props.tick % 8 === 0) td = { ...td, borderLeft: '1px solid #111' }
 
-    return <td style={td}>
+    return <td style={td} onClick={doClick}>
         <div style={cell}></div>
     </td>
 }

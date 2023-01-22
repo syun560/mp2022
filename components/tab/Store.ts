@@ -45,9 +45,11 @@ export type Action =
     {type: 'setTitle'   ; title: string}|
     {type: 'setAppState'; appState: AppState}|
     {type: 'setTimeSignatures'; timeSignatures: TimeSignature[]}|
-    {type: 'setNoteData'; noteData: NoteDatum[]}|
     {type: 'setGenerateFlag'; generateFlag: boolean}|
+    
     {type: 'setNoteData'; noteData: NoteDatum[]}|
+    {type: 'addNoteData'; note: NoteDatum}|
+
     {type: 'setNoteDataArray'; noteDataArray: number[][]}
 
 // stateとactionを受け取り、actionのtypeによってstateの更新方法を変える
@@ -74,7 +76,10 @@ export const reducer = (state: State, action: Action): State => {
     case 'setTimeSignatures': return { ...state, timeSignatures: action.timeSignatures }
     case 'setTempo': return { ...state, tempo: action.tempo }
     case 'setNoteData': return { ...state, noteData: action.noteData }
-    case 'setNoteData' : return { ...state, noteData: action.noteData }
+    case 'addNoteData' :
+        return { ...state, 
+            noteData: [...state.noteData, action.note ]
+        }
     case 'setNoteDataArray' : return { ...state, noteDataArray: action.noteDataArray }
 
     default:
