@@ -77,8 +77,26 @@ export const reducer = (state: State, action: Action): State => {
     case 'setTempo': return { ...state, tempo: action.tempo }
     case 'setNoteData': return { ...state, noteData: action.noteData }
     case 'addNoteData' :
-        return { ...state, 
-            noteData: [...state.noteData, action.note ]
+        // 同じ音だったら登録しない
+        if (state.noteData.some(n=>{
+            n.channel == action.note.channel && n.note == action.note.note && n.time == action.note.time
+        })){
+            return state
+        }
+        else{
+            // ソートする
+            let n :NoteDatum[] = [...state.noteData, action.note]
+            n.sort((a,b)=>{
+                if(a.time < b.time) return -1;
+                if(a.time > b.time) return 1;
+                if(a.note < b.note) return -1;
+                if(a.note > b.note) return 1;
+                return 0
+            })
+            
+            return { ...state, 
+                noteData: n
+            }
         }
     case 'setNoteDataArray' : return { ...state, noteDataArray: action.noteDataArray }
 

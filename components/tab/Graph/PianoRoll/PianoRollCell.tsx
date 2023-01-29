@@ -49,15 +49,16 @@ export default function PianoRollCell(props: Props) {
 
     const doClick = () => {
         //alert("うんち")
-        // 現在の情報を表示する
-        
+        // 今クリックした場所の情報を表示する
+    
         // notedataを登録する。
         const tmpNote:NoteDatum = {
             channel: 0,
-            note: 66,
-            time: 240,
+            note: props.note,
+            time: 240*props.tick,
             duration: 2
         }
+
 
         dispatch({type: 'addNoteData', note: tmpNote })
     }
