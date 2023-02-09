@@ -31,8 +31,13 @@ export default function Sequencer () {
     const play = () => {
         const nowTick = nowTickRef.current   
         // noteDataArrayを参照してピアノ音を鳴らす
-        state.noteDataArray[nowTick].forEach(n=>{
-            seqDispatch({type: 'NOTE_ON', note: n, channel: 0})
+        // state.noteDataArray[nowTick].forEach(n=>{
+        //     seqDispatch({type: 'NOTE_ON', note: n, channel: 0})
+        // })
+
+        // noteDataを参照してピアノ音を鳴らす
+        state.noteData.filter(n=>n.time === nowTick * 240).forEach(n=>{
+            seqDispatch({type: 'NOTE_ON', note: n.note, channel: 0})
         })
     }
     const stop = () => {

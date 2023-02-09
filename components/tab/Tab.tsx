@@ -1,7 +1,6 @@
 import React, { useState, useMemo, memo, useEffect, useContext } from 'react'
 import { convertData } from './Lib' 
 import Graph from './Graph/Graph'
-import { DebugNote } from './type'
 import { StateContext, DispatchContext } from '../../pages'
 
 const Tab = () => {

@@ -9,7 +9,10 @@ export default function TrackSelector (){
     // チャンネルセレクタ
     // 最後のノートのチャンネルをトラック数とする
     let ch_max = 0
-    if(state.noteData.length > 0) ch_max = state.noteData[state.noteData.length - 1].channel
+    if(state.noteData.length > 0) ch_max = [...state.noteData].sort((a,b)=>{
+        if(a.channel<b.channel) return 1;
+        if(a.channel>b.channel) return -1;
+        return 0;})[0].channel
 
     const selector = <select className='form-select' size={3} value={state.channel}
         onChange={(e:any)=>{dispatch({type: 'setChannel', channel: Number(e.target.value)})}}>

@@ -11,6 +11,7 @@ interface Props {
 }
 
 export default function PianoRollCell(props: Props) {
+    const state = useContext(StateContext)
     const dispatch = useContext(DispatchContext)
 
     // スタイルを追加
@@ -53,10 +54,10 @@ export default function PianoRollCell(props: Props) {
     
         // notedataを登録する。
         const tmpNote:NoteDatum = {
-            channel: 0,
+            channel: state.channel,
             note: props.note,
             time: 240*props.tick,
-            duration: 2
+            duration: 240
         }
 
 
